@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <!-- Librerías cliente para WebSocket -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soporte y Tickets - SHIZEN Food</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+
+    <!-- Typography: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+      });
+    </script>
+
+    <!-- Dedicated CSS for this page -->
+    <link rel="stylesheet" th:href="@{/soporte.css}" />
+  </head>
+  <body>
+    <div id="app-main-wrapper" class="app-container">
+      <!-- Mobile Top Header Bar -->
+      <header class="mobile-top-header">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button
+            onclick="toggleMobileDrawer()"
+            class="mobile-menu-btn"
+            aria-label="Abrir menú"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+          <img
+            src="../assets/images/logo.png"
+            alt="Shizen Food"
+            class="mobile-logo"
+          />
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a
+            href="notificaciones.html"
+            class="mobile-menu-btn"
+            aria-label="Notificaciones"
+          >
+            <i data-lucide="bell"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- Mobile Drawer Backdrop -->
+      <div
+        id="mobile-drawer-backdrop"
+        onclick="closeMobileDrawer()"
+        class="mobile-drawer-backdrop"
+      ></div>
+
+      <!-- SHARED APPLICATION SIDEBAR -->
+      <aside id="app-sidebar" class="app-sidebar">
+        <!-- Decorative background blur circles -->
+        <div
+          style="
+            position: absolute;
+            -right: 80px;
+            -top: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 46% 54% 66% 34%;
+            background: rgba(44, 91, 39, 0.7);
+            transform: rotate(12deg);
+            pointer-events: none;
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            -bottom: 96px;
+            -left: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 62% 38% 45% 55%;
+            background: rgba(44, 91, 39, 0.55);
+            transform: rotate(-12deg);
+            pointer-events: none;
+          "
+        ></div>
+
+        <!-- Sidebar Header & Logo -->
+        <div class="sidebar-header-box">
+          <div class="sidebar-logo-row">
+            <img
+              src="../assets/images/logo.png"
+              alt="Shizen Food"
+              class="sidebar-logo-img"
+            />
+            <button
+              onclick="closeMobileDrawer()"
+              class="sidebar-close-btn"
+              aria-label="Cerrar menú"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <!-- Superadmin Profile -->
+          <div class="sidebar-user-card">
+            <div class="user-avatar-circle">AS</div>
+            <div class="user-info-text">
+              <p class="user-name-title">Admin Shizen</p>
+              <p class="user-role-subtitle">Operación Bogotá</p>
+            </div>
+            <span class="user-online-dot"></span>
+          </div>
+        </div>
+
+        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
+        <nav class="sidebar-nav-container">
+          <p class="nav-section-title">Gestión</p>
+          <div class="nav-menu-list">
+            <a href="estadisticas.html" class="sidebar-nav-item">
+              <i data-lucide="bar-chart-3"></i>
+              <span>Estadísticas</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="pedidos.html" class="sidebar-nav-item">
+              <i data-lucide="shopping-bag"></i>
+              <span>Pedidos</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="usuarios.html" class="sidebar-nav-item">
+              <i data-lucide="user-round"></i>
+              <span>Usuarios</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+          </div>
+        </nav>
+
+        <!-- Superadmin Development Notice Banner -->
+        <div class="sidebar-notice-banner">
+          <div class="notice-icon-box">
+            <i data-lucide="code-2"></i>
+          </div>
+          <div>
+            <p class="notice-title">Estamos trabajando en esto</p>
+            <p class="notice-text">
+              El panel de Superadmin está en desarrollo. Nuevos módulos y
+              herramientas estarán disponibles en futuras versiones.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer Menu -->
+        <div class="sidebar-footer-menu">
+          <a href="soporte.html" class="sidebar-footer-item active">
+            <i data-lucide="headphones"></i>
+            <span>Soporte y Tickets</span>
+          </a>
+
+          <a href="notificaciones.html" class="sidebar-footer-item">
+            <i data-lucide="bell"></i>
+            <span>Notificaciones</span>
+            <span
+              id="sidebar-notification-badge"
+              class="notification-count-badge"
+              >3</span
+            >
+          </a>
+
+          <button onclick="handleLogout()" class="sidebar-footer-item">
+            <i data-lucide="log-out"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+      </aside>
+
+      <main id="view-soporte" class="view-section active">
+        <div class="view-content-container">
+          <header class="view-header">
+            <div>
+              <div class="view-header-eyebrow">
+                <span>Atención al Usuario</span>
+              </div>
+              <h1 class="view-header-title">Soporte y Tickets</h1>
+              <p class="view-header-subtitle">
+                Mesa de ayuda y resolución directa de incidentes en tiempo real.
+              </p>
+            </div>
+            <button onclick="openNewTicketModal()" class="btn-accent">
+              <i data-lucide="plus"></i> Crear ticket
+            </button>
+          </header>
+
+          <!-- Two Column Support & Chat Layout -->
+          <div class="support-grid">
+            <!-- Tickets List Card -->
+            <div class="support-tickets-card">
+              <div class="support-tickets-header">
+                <h3 class="support-tickets-header-title">Bandeja de entrada</h3>
+                <p class="support-tickets-header-sub">
+                  Selecciona un ticket para responder
+                </p>
+              </div>
+              <div id="support-tickets-list" class="support-tickets-list">
+                <!-- Cuando no hay tickets -->
+                <div
+                  th:if="${#lists.isEmpty(tickets)}"
+                  style="padding: 24px; text-align: center; color: #8c968b"
+                >
+                  No hay tickets registrados.
+                </div>
+
+                <!-- Lista de tickets -->
+                <div
+                  th:each="t : ${tickets}"
+                  class="support-ticket-item"
+                  th:data-id="${t.idTicket}"
+                  th:data-asunto="${t.asunto}"
+                  th:data-descripcion="${t.descripcion}"
+                  th:data-estado="${t.estado}"
+                  th:data-pedido="${t.idPedido}"
+                  th:data-fecha="${#temporals.format(t.fechaCreacion, 'dd/MM/yyyy HH:mm')}"
+                  onclick="seleccionarTicket(this)"
+                >
+                  <div class="ticket-top-row">
+                    <strong
+                      th:text="${t.asunto}"
+                      style="font-size: 13px; color: #1b2e1d"
+                      >Asunto</strong
+                    >
+                    <span
+                      class="ticket-badge"
+                      th:classappend="${t.estado == 'abierto' ? 'media' : 'baja'}"
+                      th:text="${t.estado}"
+                      >Abierto</span
+                    >
+                  </div>
+
+                  <p
+                    th:text="${t.descripcion}"
+                    style="
+                      font-size: 12px;
+                      color: #556153;
+                      margin: 4px 0;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    "
+                  >
+                    Descripción...
+                  </p>
+
+                  <div class="ticket-bottom-row">
+                    <span
+                      th:text="${#temporals.format(t.fechaCreacion, 'dd/MM/yyyy HH:mm')}"
+                      >Fecha</span
+                    >
+                    <span th:text="'#TCK-' + ${t.idTicket}">#TCK-1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Ticket Chat Card -->
+            <div class="support-chat-card">
+              <div
+                class="support-chat-header"
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  gap: 12px;
+                "
+              >
+                <div>
+                  <h3 id="support-chat-title" class="chat-title">
+                    Ticket Seleccionado
+                  </h3>
+                  <p id="support-chat-subtitle" class="chat-subtitle">
+                    Selecciona un ticket para ver detalles
+                  </p>
+                </div>
+
+                <!-- Botones de Acción: Rastrear Pedido + Resolver Ticket -->
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <!-- Botón de Pedido (se muestra solo si el ticket tiene idPedido) -->
+                  <a
+                    id="support-order-link"
+                    href="#"
+                    style="
+                      display: none;
+                      align-items: center;
+                      gap: 6px;
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: #2c5b27;
+                      background: #eaf2e8;
+                      padding: 6px 12px;
+                      border-radius: 20px;
+                      text-decoration: none;
+                      border: 1px solid #d5e4d2;
+                    "
+                  >
+                    <i
+                      data-lucide="package"
+                      style="width: 14px; height: 14px"
+                    ></i>
+                    <span id="support-order-text">Pedido #1</span>
+                  </a>
+
+                  <!-- Botón de Cerrar / Resolver Ticket -->
+                  <form id="form-cerrar-ticket" method="post" style="margin: 0">
+                    <button
+                      type="submit"
+                      id="btn-cerrar-ticket"
+                      style="
+                        display: none;
+                        align-items: center;
+                        gap: 6px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #ffffff;
+                        background: #2c5b27;
+                        border: none;
+                        padding: 6px 14px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                      "
+                    >
+                      <i
+                        data-lucide="check-circle"
+                        style="width: 14px; height: 14px"
+                      ></i>
+                      Resolver ticket
+                    </button>
+                  </form>
+
+                  <!-- Badge de ticket resuelto -->
+                  <span
+                    id="badge-ticket-cerrado"
+                    style="
+                      display: none;
+                      font-size: 11px;
+                      font-weight: 600;
+                      padding: 5px 12px;
+                      border-radius: 12px;
+                      background: #e2e8de;
+                      color: #556153;
+                    "
+                  >
+                    ✓ Resuelto
+                  </span>
+                </div>
+              </div>
+              <!-- Messages Area -->
+              <div id="support-chat-messages" class="support-chat-messages">
+                <!-- Injected via JavaScript -->
+              </div>
+
+              <!-- Reply Form -->
+              <form
+                onsubmit="sendSupportChatMessage(event)"
+                class="support-chat-input-row"
+              >
+                <input
+                  id="support-chat-input"
+                  placeholder="Escribe tu respuesta para el usuario..."
+                  class="support-chat-input"
+                />
+                <button
+                  type="submit"
+                  class="support-chat-send-btn"
+                  aria-label="Enviar mensaje"
+                >
+                  <i data-lucide="send" style="width: 16px; height: 16px"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div id="new-ticket-modal" class="modal-overlay">
+        <div
+          class="modal-content"
+          style="max-width: 480px"
+          onclick="event.stopPropagation()"
+        >
+          <div class="modal-header">
+            <h2 class="modal-title">Crear nuevo ticket</h2>
+            <button
+              onclick="closeNewTicketModal()"
+              class="modal-close-btn"
+              aria-label="Cerrar modal"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <form
+            id="new-ticket-form"
+            th:action="@{/soporte/crear}"
+            method="post"
+            class="modal-body"
+          >
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <div class="form-field-group">
+                <label class="form-field-label" for="ticket-customer"
+                  >Nombre del cliente</label
+                >
+                <input
+                  id="ticket-customer"
+                  required
+                  placeholder="Ej. Andrés Castro"
+                  class="form-field-input"
+                />
+              </div>
+
+              <div class="form-field-group">
+                <label class="form-field-label" for="ticket-subject"
+                  >Asunto del ticket</label
+                >
+                <input
+                  id="ticket-subject"
+                  name="asunto"
+                  required
+                  placeholder="Ej. Solicitud de factura electrónica"
+                  class="form-field-input"
+                />
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-field-group">
+                  <label class="form-field-label" for="ticket-category"
+                    >Categoría</label
+                  >
+                  <select id="ticket-category" class="form-field-select">
+                    <option value="Pedido">Pedido</option>
+                    <option value="Pago">Pago</option>
+                    <option value="Técnico">Técnico</option>
+                    <option value="Reclamo">Reclamo</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+
+                <div class="form-field-group">
+                  <label class="form-field-label" for="ticket-priority"
+                    >Prioridad</label
+                  >
+                  <select id="ticket-priority" class="form-field-select">
+                    <option value="Alta">Alta</option>
+                    <option value="Media">Media</option>
+                    <option value="Baja">Baja</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-field-group">
+                <label class="form-field-label" for="ticket-message"
+                  >Mensaje inicial</label
+                >
+                <textarea
+                  id="ticket-message"
+                  name="descripcion"
+                  required
+                  rows="3"
+                  placeholder="Describe brevemente la solicitud del cliente..."
+                  class="form-field-textarea"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                onclick="closeNewTicketModal()"
+                class="btn-modal-cancel"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn-modal-confirm">
+                Crear ticket
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script th:src="@{/js/websocket.js}"></script>
+    <script th:src="@{/js/soporte.js}"></script>
+  </body>
+</html>

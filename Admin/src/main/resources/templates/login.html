@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acceso Seguro - Shizen Food</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Dedicated CSS for login -->
+    <!-- Enlace CSS usando Thymeleaf (th:href) -->
+    <link rel="stylesheet" th:href="@{/login.css}" />
+  </head>
+  <body>
+    <main class="login-page">
+      <!-- Left branding section (desktop only) -->
+      <section class="login-brand-panel">
+        <div class="deco-circle-1"></div>
+        <div class="deco-circle-2"></div>
+        <div class="deco-glow"></div>
+
+        <div class="brand-header">
+          <img
+            src="../assets/images/logo.png"
+            alt="Shizen Food"
+            class="brand-logo"
+          />
+          <p class="brand-subtitle-badge">Panel administrativo</p>
+        </div>
+
+        <div class="brand-center-content">
+          <h1 class="brand-headline">
+            Toda tu operación,
+            <span class="brand-headline-accent">en su punto.</span>
+          </h1>
+          <p class="brand-description">
+            Negocios, usuarios, soporte y trazabilidad conectados en un solo
+            lugar para administrar la plataforma SHIZEN.
+          </p>
+
+          <div class="dev-banner">
+            <div class="dev-banner-icon">
+              <i data-lucide="code-2"></i>
+            </div>
+            <div>
+              <p class="dev-banner-title">Estamos trabajando en esto</p>
+              <p class="dev-banner-text">
+                El panel de Superadmin se encuentra en desarrollo. Nuevos
+                módulos, herramientas y funciones de gestión general estarán
+                disponibles progresivamente.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="brand-footer">
+          <span>© 2026 Shizen Food</span>
+          <span class="status-badge-inline">
+            <span class="pulse-dot"></span> Sistemas operando
+          </span>
+        </div>
+      </section>
+
+      <!-- Right login form section -->
+      <section class="login-form-panel">
+        <div class="login-deco-circle"></div>
+        <div class="login-box">
+          <div class="login-header">
+            <div class="badge-access">
+              <i data-lucide="sparkles"></i> Acceso seguro
+            </div>
+            <h2 class="login-title">Bienvenido de nuevo</h2>
+            <p class="login-subtitle">
+              Ingresa tus credenciales para abrir el panel de Shizen.
+            </p>
+          </div>
+
+          <!-- Login form - Correo-->
+          <form
+            id="standalone-login-form"
+            th:action="@{/login}"
+            method="post"
+            class="login-form"
+          >
+            <div class="form-group">
+              <label class="form-label" for="standalone-email"
+                >Correo electrónico</label
+              >
+              <div class="input-container">
+                <i data-lucide="mail" class="input-icon"></i>
+                <input
+                  type="email"
+                  id="standalone-email"
+                  name="username"
+                  placeholder="tu correo electronico"
+                  class="form-input"
+                />
+              </div>
+            </div>
+
+            <!-- Login form - Contraseña-->
+
+            <div class="form-group">
+              <label class="form-label" for="standalone-password"
+                >Contraseña</label
+              >
+              <div class="input-container">
+                <i data-lucide="lock-keyhole" class="input-icon"></i>
+                <input
+                  type="password"
+                  id="standalone-password"
+                  name="password"
+                  placeholder="••••••••"
+                  class="form-input has-toggle"
+                />
+                <button
+                  type="button"
+                  onclick="toggleStandalonePassword()"
+                  class="toggle-password-btn"
+                  aria-label="Mostrar u ocultar contraseña"
+                >
+                  <i data-lucide="eye" id="standalone-eye-icon"></i>
+                </button>
+              </div>
+            </div>
+
+            <p id="standalone-error" class="alert-error hidden"></p>
+
+            <button type="submit" id="standalone-btn" class="btn-primary-login">
+              <span id="standalone-btn-text">Ingresar al panel</span>
+              <i
+                data-lucide="arrow-right"
+                id="standalone-btn-icon"
+                class="btn-arrow-icon"
+              ></i>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script th:src="@{/js/login.js}"></script>
+  </body>
+</html>

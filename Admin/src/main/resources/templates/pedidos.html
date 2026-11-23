@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedidos - SHIZEN Food</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+
+    <!-- Typography: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+      });
+    </script>
+
+    <!-- Dedicated CSS for this page -->
+    <link rel="stylesheet" th:href="@{/pedidos.css}" />
+  </head>
+  <body>
+    <div id="app-main-wrapper" class="app-container">
+      <!-- Mobile Top Header Bar -->
+      <header class="mobile-top-header">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button
+            onclick="toggleMobileDrawer()"
+            class="mobile-menu-btn"
+            aria-label="Abrir menú"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+          <img
+            src="../assets/images/logo.png"
+            alt="Shizen Food"
+            class="mobile-logo"
+          />
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a
+            href="notificaciones.html"
+            class="mobile-menu-btn"
+            aria-label="Notificaciones"
+          >
+            <i data-lucide="bell"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- Mobile Drawer Backdrop -->
+      <div
+        id="mobile-drawer-backdrop"
+        onclick="closeMobileDrawer()"
+        class="mobile-drawer-backdrop"
+      ></div>
+
+      <!-- SHARED APPLICATION SIDEBAR -->
+      <aside id="app-sidebar" class="app-sidebar">
+        <!-- Decorative background blur circles -->
+        <div
+          style="
+            position: absolute;
+            -right: 80px;
+            -top: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 46% 54% 66% 34%;
+            background: rgba(44, 91, 39, 0.7);
+            transform: rotate(12deg);
+            pointer-events: none;
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            -bottom: 96px;
+            -left: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 62% 38% 45% 55%;
+            background: rgba(44, 91, 39, 0.55);
+            transform: rotate(-12deg);
+            pointer-events: none;
+          "
+        ></div>
+
+        <!-- Sidebar Header & Logo -->
+        <div class="sidebar-header-box">
+          <div class="sidebar-logo-row">
+            <img
+              src="../assets/images/logo.png"
+              alt="Shizen Food"
+              class="sidebar-logo-img"
+            />
+            <button
+              onclick="closeMobileDrawer()"
+              class="sidebar-close-btn"
+              aria-label="Cerrar menú"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <!-- Superadmin Profile -->
+          <div class="sidebar-user-card">
+            <div class="user-avatar-circle">AS</div>
+            <div class="user-info-text">
+              <p class="user-name-title">Admin Shizen</p>
+              <p class="user-role-subtitle">Operación Bogotá</p>
+            </div>
+            <span class="user-online-dot"></span>
+          </div>
+        </div>
+
+        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
+        <nav class="sidebar-nav-container">
+          <p class="nav-section-title">Gestión</p>
+          <div class="nav-menu-list">
+            <a href="estadisticas.html" class="sidebar-nav-item">
+              <i data-lucide="bar-chart-3"></i>
+              <span>Estadísticas</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="pedidos.html" class="sidebar-nav-item active">
+              <i data-lucide="shopping-bag"></i>
+              <span>Pedidos</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="usuarios.html" class="sidebar-nav-item">
+              <i data-lucide="user-round"></i>
+              <span>Usuarios</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+          </div>
+        </nav>
+
+        <!-- Superadmin Development Notice Banner -->
+        <div class="sidebar-notice-banner">
+          <div class="notice-icon-box">
+            <i data-lucide="code-2"></i>
+          </div>
+          <div>
+            <p class="notice-title">Estamos trabajando en esto</p>
+            <p class="notice-text">
+              El panel de Superadmin está en desarrollo. Nuevos módulos y
+              herramientas estarán disponibles en futuras versiones.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer Menu -->
+        <div class="sidebar-footer-menu">
+          <a href="soporte.html" class="sidebar-footer-item">
+            <i data-lucide="headphones"></i>
+            <span>Soporte y Tickets</span>
+          </a>
+
+          <a href="notificaciones.html" class="sidebar-footer-item">
+            <i data-lucide="bell"></i>
+            <span>Notificaciones</span>
+            <span
+              id="sidebar-notification-badge"
+              class="notification-count-badge"
+              >3</span
+            >
+          </a>
+
+          <button onclick="handleLogout()" class="sidebar-footer-item">
+            <i data-lucide="log-out"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+      </aside>
+
+      <main id="view-pedidos" class="view-section active">
+        <div class="view-content-container">
+          <!-- Header -->
+          <header class="view-header">
+            <div>
+              <div class="view-header-eyebrow">
+                <span>Operación</span>
+                <span
+                  style="
+                    display: inline-block;
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    background: var(--accent);
+                  "
+                ></span>
+                <span>10 de junio de 2026</span>
+              </div>
+              <h1 class="view-header-title">Pedidos</h1>
+              <p class="view-header-subtitle">
+                Una lectura clara de la operación de hoy, sin perder el ritmo.
+              </p>
+            </div>
+            <div class="header-action-buttons">
+              <button onclick="exportOrdersCSV()" class="btn-secondary">
+                <i data-lucide="download"></i> Exportar
+              </button>
+              <button onclick="openCreateOrderModal()" class="btn-accent">
+                <i data-lucide="shopping-bag"></i> Crear pedido
+              </button>
+            </div>
+          </header>
+
+          <!-- KPI Metrics Row -->
+          <section class="metrics-row-3">
+            <!-- Featured Metric: Hoy -->
+            <div class="metric-card featured">
+              <div class="metric-top-bar">
+                <div class="metric-icon-box">
+                  <i data-lucide="sparkles"></i>
+                </div>
+                <span class="metric-trend-pill">
+                  <i
+                    data-lucide="trending-up"
+                    style="width: 12px; height: 12px"
+                  ></i>
+                  +10,2%
+                </span>
+              </div>
+              <p class="metric-label-title">Venta de hoy</p>
+              <div class="metric-value-row">
+                <p class="metric-huge-number">$1.842.500</p>
+                <p class="metric-subdetail">34 pedidos</p>
+              </div>
+            </div>
+
+            <!-- Metric: Semana -->
+            <div class="metric-card">
+              <div class="metric-top-bar">
+                <div class="metric-icon-box">
+                  <i data-lucide="package-check"></i>
+                </div>
+                <span class="metric-trend-pill">
+                  <i
+                    data-lucide="trending-up"
+                    style="width: 12px; height: 12px"
+                  ></i>
+                  +3,1%
+                </span>
+              </div>
+              <p class="metric-label-title">Esta semana</p>
+              <div class="metric-value-row">
+                <p class="metric-huge-number">$9.230.000</p>
+                <p class="metric-subdetail">187 pedidos</p>
+              </div>
+            </div>
+
+            <!-- Metric: Mes -->
+            <div class="metric-card">
+              <div class="metric-top-bar">
+                <div class="metric-icon-box">
+                  <i data-lucide="users"></i>
+                </div>
+                <span class="metric-trend-pill">
+                  <i
+                    data-lucide="trending-up"
+                    style="width: 12px; height: 12px"
+                  ></i>
+                  +7,2%
+                </span>
+              </div>
+              <p class="metric-label-title">Este mes</p>
+              <div class="metric-value-row">
+                <p class="metric-huge-number">$42.680.000</p>
+                <p class="metric-subdetail">854 pedidos</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Activity & Peak Hour Grid -->
+          <section class="activity-peak-grid">
+            <!-- Activity by time band -->
+            <div class="activity-card">
+              <div class="activity-header">
+                <div>
+                  <p class="activity-eyebrow">Flujo de pedidos</p>
+                  <h2 class="activity-title">Actividad por franja</h2>
+                </div>
+                <span class="badge-live">
+                  <span class="pulse-dot"></span> En vivo
+                </span>
+              </div>
+              <div class="activity-bars-container">
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 24%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 38%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 28%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 45%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 58%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 44%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 69%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 82%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 61%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 74%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 54%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div class="activity-bar-fill" style="height: 65%"></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div
+                    class="activity-bar-fill highlight"
+                    style="height: 88%"
+                  ></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div
+                    class="activity-bar-fill highlight"
+                    style="height: 93%"
+                  ></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div
+                    class="activity-bar-fill highlight"
+                    style="height: 76%"
+                  ></div>
+                </div>
+                <div class="activity-bar-col">
+                  <div
+                    class="activity-bar-fill highlight"
+                    style="height: 68%"
+                  ></div>
+                </div>
+              </div>
+              <div class="activity-time-labels">
+                <span>8 AM</span><span>12 PM</span><span>4 PM</span
+                ><span>8 PM</span>
+              </div>
+            </div>
+
+            <!-- Peak Hour Box -->
+            <div class="peak-card">
+              <div>
+                <p class="peak-eyebrow">Hora pico</p>
+                <h2 class="peak-title">12:30 — 2:00 PM</h2>
+                <p class="peak-desc">
+                  48% de la demanda del día se concentra en el almuerzo en
+                  Bogotá Chapinero y Chicó.
+                </p>
+              </div>
+              <div class="peak-footer">
+                <span>Tiempo promedio entrega</span>
+                <span class="peak-val-accent">28 min</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Orders Table Card -->
+          <section class="table-card">
+            <div class="table-toolbar">
+              <div style="display: flex; align-items: center; gap: 12px">
+                <h2 class="table-title">Listado de pedidos</h2>
+                <div class="segmented-control">
+                  <button
+                    id="period-btn-mensual"
+                    onclick="setOrdersPeriod('Mensual')"
+                    class="segmented-btn active"
+                  >
+                    Mensual
+                  </button>
+                  <button
+                    id="period-btn-semanal"
+                    onclick="setOrdersPeriod('Semanal')"
+                    class="segmented-btn"
+                  >
+                    Semanal
+                  </button>
+                </div>
+              </div>
+              <div class="search-input-box">
+                <i data-lucide="search" class="search-icon"></i>
+                <input
+                  id="orders-search-input"
+                  type="text"
+                  placeholder="Buscar pedido, cliente, plato..."
+                  class="search-input"
+                />
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Pedido</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Plato</th>
+                    <th>Valor</th>
+                    <th>Estado</th>
+                    <th style="text-align: right"></th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <div id="view-order-modal" class="modal-overlay">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <div class="modal-header">
+            <div>
+              <p id="detail-order-eyebrow" class="modal-eyebrow">#12504</p>
+              <h2 class="modal-title">Detalle del pedido</h2>
+            </div>
+            <button
+              onclick="closeOrderDetailModal()"
+              class="modal-close-btn"
+              aria-label="Cerrar modal"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <!-- Customer Card -->
+            <div class="order-customer-card">
+              <div id="detail-order-initials" class="customer-avatar-box">
+                FM
+              </div>
+              <div class="customer-info">
+                <p id="detail-order-customer" class="customer-name">
+                  Frank Murlo
+                </p>
+                <p id="detail-order-date" class="customer-date">10 Jun, 2026</p>
+              </div>
+              <span
+                id="detail-order-status-badge"
+                class="badge-status nuevo"
+                style="margin-left: auto"
+              >
+                Nuevo pedido
+              </span>
+            </div>
+
+            <!-- Visual Delivery Route Map Mockup -->
+            <div class="map-route-container">
+              <div class="map-grid-bg"></div>
+              <div class="map-start-dot"></div>
+              <div class="map-route-line"></div>
+              <div class="map-end-pin">
+                <i data-lucide="map-pin" style="width: 20px; height: 20px"></i>
+              </div>
+              <div class="map-badge-tag">
+                <i
+                  data-lucide="navigation"
+                  style="width: 12px; height: 12px"
+                ></i>
+                Ruta de entrega
+              </div>
+              <div class="map-floating-address">
+                <div class="floating-icon-box">
+                  <i
+                    data-lucide="map-pin"
+                    style="width: 16px; height: 16px"
+                  ></i>
+                </div>
+                <div style="min-width: 0">
+                  <p
+                    style="
+                      font-size: 9px;
+                      font-weight: 700;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      color: #8b948a;
+                    "
+                  >
+                    Dirección de entrega
+                  </p>
+                  <p
+                    id="detail-order-map-address"
+                    class="truncate"
+                    style="
+                      margin-top: 2px;
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: #303a31;
+                    "
+                  >
+                    Calle 85 #12-34, Chapinero, Bogotá
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4 Grid Detail Cards -->
+            <div class="order-detail-grid-4">
+              <div class="detail-info-card">
+                <p class="detail-info-label">Plato</p>
+                <p id="detail-order-dish-card" class="detail-info-val">
+                  Veggie Burger
+                </p>
+              </div>
+              <div class="detail-info-card">
+                <p class="detail-info-label">Valor</p>
+                <p id="detail-order-amount-card" class="detail-info-val">
+                  $45.800 COP
+                </p>
+              </div>
+              <div class="detail-info-card">
+                <p class="detail-info-label">Fecha</p>
+                <p id="detail-order-date-card" class="detail-info-val">
+                  10 Jun, 2026
+                </p>
+              </div>
+              <div class="detail-info-card">
+                <p class="detail-info-label">Identificador</p>
+                <p id="detail-order-id-card" class="detail-info-val">#12504</p>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                onclick="closeOrderDetailModal()"
+                class="btn-modal-cancel"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="create-order-modal" class="modal-overlay">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <div class="modal-header">
+            <div>
+              <p id="create-order-eyebrow" class="modal-eyebrow">#12516</p>
+              <h2 class="modal-title">Crear pedido</h2>
+            </div>
+            <button
+              onclick="closeCreateOrderModal()"
+              class="modal-close-btn"
+              aria-label="Cerrar modal"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <form
+            id="new-order-form"
+            onsubmit="handleCreateOrderSubmit(event)"
+            class="modal-body"
+          >
+            <div class="form-grid-2">
+              <div class="form-col-full form-field-group">
+                <label class="form-field-label" for="order-input-customer"
+                  >Cliente</label
+                >
+                <input
+                  id="order-input-customer"
+                  required
+                  placeholder="Nombre del cliente"
+                  class="form-field-input"
+                />
+              </div>
+
+              <div class="form-col-full form-field-group">
+                <label class="form-field-label" for="order-input-dish"
+                  >Plato</label
+                >
+                <input
+                  id="order-input-dish"
+                  required
+                  placeholder="Producto o plato solicitado"
+                  class="form-field-input"
+                />
+              </div>
+
+              <div class="form-col-full form-field-group">
+                <label class="form-field-label" for="order-input-address"
+                  >Dirección de entrega</label
+                >
+                <div class="field-with-icon">
+                  <i data-lucide="map-pin" class="field-icon-left"></i>
+                  <input
+                    id="order-input-address"
+                    required
+                    placeholder="Calle, carrera, barrio, Bogotá"
+                    class="form-field-input"
+                  />
+                </div>
+              </div>
+
+              <div class="form-field-group">
+                <label class="form-field-label" for="order-input-amount"
+                  >Valor en COP</label
+                >
+                <input
+                  id="order-input-amount"
+                  required
+                  placeholder="$0 COP"
+                  class="form-field-input"
+                />
+              </div>
+
+              <div class="form-field-group">
+                <label class="form-field-label" for="order-input-status"
+                  >Estado</label
+                >
+                <select id="order-input-status" class="form-field-select">
+                  <option value="Nuevo pedido">Nuevo pedido</option>
+                  <option value="En camino">En camino</option>
+                  <option value="Entregado">Entregado</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                onclick="closeCreateOrderModal()"
+                class="btn-modal-cancel"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                id="create-order-submit-btn"
+                disabled
+                class="btn-modal-confirm"
+              >
+                Crear pedido
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Application Logic (Pure Vanilla JS) -->
+    <script src="../js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notificaciones - SHIZEN Food</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+
+    <!-- Typography: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+      });
+    </script>
+
+    <!-- Dedicated CSS for this page -->
+    <link rel="stylesheet" th:href="@{/notificaciones.css}" />
+  </head>
+  <body>
+    <div id="app-main-wrapper" class="app-container">
+      <!-- Mobile Top Header Bar -->
+      <header class="mobile-top-header">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button
+            onclick="toggleMobileDrawer()"
+            class="mobile-menu-btn"
+            aria-label="Abrir menú"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+          <img
+            src="../assets/images/logo.png"
+            alt="Shizen Food"
+            class="mobile-logo"
+          />
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a
+            href="notificaciones.html"
+            class="mobile-menu-btn"
+            aria-label="Notificaciones"
+          >
+            <i data-lucide="bell"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- Mobile Drawer Backdrop -->
+      <div
+        id="mobile-drawer-backdrop"
+        onclick="closeMobileDrawer()"
+        class="mobile-drawer-backdrop"
+      ></div>
+
+      <!-- SHARED APPLICATION SIDEBAR -->
+      <aside id="app-sidebar" class="app-sidebar">
+        <!-- Decorative background blur circles -->
+        <div
+          style="
+            position: absolute;
+            -right: 80px;
+            -top: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 46% 54% 66% 34%;
+            background: rgba(44, 91, 39, 0.7);
+            transform: rotate(12deg);
+            pointer-events: none;
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            -bottom: 96px;
+            -left: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 62% 38% 45% 55%;
+            background: rgba(44, 91, 39, 0.55);
+            transform: rotate(-12deg);
+            pointer-events: none;
+          "
+        ></div>
+
+        <!-- Sidebar Header & Logo -->
+        <div class="sidebar-header-box">
+          <div class="sidebar-logo-row">
+            <img
+              src="../assets/images/logo.png"
+              alt="Shizen Food"
+              class="sidebar-logo-img"
+            />
+            <button
+              onclick="closeMobileDrawer()"
+              class="sidebar-close-btn"
+              aria-label="Cerrar menú"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <!-- Superadmin Profile -->
+          <div class="sidebar-user-card">
+            <div class="user-avatar-circle">AS</div>
+            <div class="user-info-text">
+              <p class="user-name-title">Admin Shizen</p>
+              <p class="user-role-subtitle">Operación Bogotá</p>
+            </div>
+            <span class="user-online-dot"></span>
+          </div>
+        </div>
+
+        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
+        <nav class="sidebar-nav-container">
+          <p class="nav-section-title">Gestión</p>
+          <div class="nav-menu-list">
+            <a href="estadisticas.html" class="sidebar-nav-item">
+              <i data-lucide="bar-chart-3"></i>
+              <span>Estadísticas</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="pedidos.html" class="sidebar-nav-item">
+              <i data-lucide="shopping-bag"></i>
+              <span>Pedidos</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="usuarios.html" class="sidebar-nav-item">
+              <i data-lucide="user-round"></i>
+              <span>Usuarios</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+          </div>
+        </nav>
+
+        <!-- Superadmin Development Notice Banner -->
+        <div class="sidebar-notice-banner">
+          <div class="notice-icon-box">
+            <i data-lucide="code-2"></i>
+          </div>
+          <div>
+            <p class="notice-title">Estamos trabajando en esto</p>
+            <p class="notice-text">
+              El panel de Superadmin está en desarrollo. Nuevos módulos y
+              herramientas estarán disponibles en futuras versiones.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer Menu -->
+        <div class="sidebar-footer-menu">
+          <a href="soporte.html" class="sidebar-footer-item">
+            <i data-lucide="headphones"></i>
+            <span>Soporte y Tickets</span>
+          </a>
+
+          <a href="notificaciones.html" class="sidebar-footer-item active">
+            <i data-lucide="bell"></i>
+            <span>Notificaciones</span>
+            <span
+              id="sidebar-notification-badge"
+              class="notification-count-badge"
+              >3</span
+            >
+          </a>
+
+          <button onclick="handleLogout()" class="sidebar-footer-item">
+            <i data-lucide="log-out"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+      </aside>
+
+      <main id="view-notificaciones" class="view-section active">
+        <div class="view-content-container" style="max-width: 1200px">
+          <header class="view-header">
+            <div>
+              <div class="view-header-eyebrow">
+                <span>Centro de Alertas</span>
+              </div>
+              <h1 class="view-header-title">Notificaciones</h1>
+              <p class="view-header-subtitle">
+                Eventos del sistema, alertas financieras y actividad de pedidos.
+              </p>
+            </div>
+            <div class="notifications-header-actions">
+              <button
+                onclick="markAllNotificationsAsRead()"
+                class="btn-outline"
+              >
+                <i data-lucide="check" style="color: var(--primary)"></i> Marcar
+                leídas
+              </button>
+              <button
+                onclick="clearAllNotifications()"
+                class="btn-outline btn-outline-danger"
+              >
+                <i data-lucide="trash-2"></i> Limpiar
+              </button>
+            </div>
+          </header>
+
+          <!-- Filters -->
+          <div
+            style="
+              display: flex;
+              gap: 8px;
+              overflow-x: auto;
+              padding-bottom: 8px;
+              margin-bottom: 24px;
+            "
+          >
+            <button
+              onclick="filterNotifications('Todas')"
+              data-filter="Todas"
+              class="notification-filter-btn active"
+            >
+              Todas
+            </button>
+            <button
+              onclick="filterNotifications('pedido')"
+              data-filter="pedido"
+              class="notification-filter-btn"
+            >
+              Pedidos
+            </button>
+            <button
+              onclick="filterNotifications('soporte')"
+              data-filter="soporte"
+              class="notification-filter-btn"
+            >
+              Soporte
+            </button>
+            <button
+              onclick="filterNotifications('sistema')"
+              data-filter="sistema"
+              class="notification-filter-btn"
+            >
+              Sistema
+            </button>
+            <button
+              onclick="filterNotifications('finanzas')"
+              data-filter="finanzas"
+              class="notification-filter-btn"
+            >
+              Finanzas
+            </button>
+          </div>
+
+          <!-- Notification Cards List -->
+          <div id="notifications-list-container" class="notifications-list">
+            <!-- Si no hay notificaciones en la BD -->
+            <div th:if="${#lists.isEmpty(notificaciones)}" style="text-align: center; padding: 48px; color: var(--text-muted);">
+              <i data-lucide="bell-off" style="width: 48px; height: 48px; margin-bottom: 12px; stroke-width: 1.5;"></i>
+              <p style="font-size: 16px; font-weight: 600;">No tienes notificaciones en este momento</p>
+            </div>
+
+            <!-- Iteramos sobre las notificaciones reales de la base de datos -->
+            <div
+              th:each="n : ${notificaciones}"
+              class="notification-item-card"
+              th:classappend="${n.leida == false} ? ' unread' : ''"
+            >
+              <div
+                class="notif-icon-box"
+                th:classappend="${n.tipo != null} ? ' ' + ${n.tipo.toLowerCase()} : ' sistema'"
+              >
+                <i data-lucide="bell"></i>
+              </div>
+
+              <div class="notif-content">
+                <div class="notif-title-row">
+                  <h3 class="notif-title" th:text="${n.titulo}">Título de la notificación</h3>
+                  <span
+                    class="notif-time"
+                    th:text="${n.fechaCreacion != null} ? ${#temporals.format(n.fechaCreacion, 'dd MMM, HH:mm')} : ''"
+                  >
+                    10:30
+                  </span>
+                </div>
+                <p class="notif-message" th:text="${n.mensaje}">
+                  Cuerpo del mensaje de la notificación...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Core Application Logic (Pure Vanilla JS) -->
+    <script src="../js/app.js"></script>
+  </body>
+</html>

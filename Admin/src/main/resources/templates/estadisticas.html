@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estadísticas - SHIZEN Food</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+
+    <!-- Typography: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+      });
+    </script>
+
+    <!-- Dedicated CSS for this page -->
+    <link rel="stylesheet" th:href="@{/estadisticas.css}" />
+  </head>
+  <body>
+    <div id="app-main-wrapper" class="app-container">
+      <!-- Mobile Top Header Bar -->
+      <header class="mobile-top-header">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button
+            onclick="toggleMobileDrawer()"
+            class="mobile-menu-btn"
+            aria-label="Abrir menú"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+          <img
+            src="../assets/images/logo.png"
+            alt="Shizen Food"
+            class="mobile-logo"
+          />
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a
+            href="notificaciones.html"
+            class="mobile-menu-btn"
+            aria-label="Notificaciones"
+          >
+            <i data-lucide="bell"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- Mobile Drawer Backdrop -->
+      <div
+        id="mobile-drawer-backdrop"
+        onclick="closeMobileDrawer()"
+        class="mobile-drawer-backdrop"
+      ></div>
+
+      <!-- SHARED APPLICATION SIDEBAR -->
+      <aside id="app-sidebar" class="app-sidebar">
+        <!-- Decorative background blur circles -->
+        <div
+          style="
+            position: absolute;
+            -right: 80px;
+            -top: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 46% 54% 66% 34%;
+            background: rgba(44, 91, 39, 0.7);
+            transform: rotate(12deg);
+            pointer-events: none;
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            -bottom: 96px;
+            -left: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 62% 38% 45% 55%;
+            background: rgba(44, 91, 39, 0.55);
+            transform: rotate(-12deg);
+            pointer-events: none;
+          "
+        ></div>
+
+        <!-- Sidebar Header & Logo -->
+        <div class="sidebar-header-box">
+          <div class="sidebar-logo-row">
+            <img
+              src="../assets/images/logo.png"
+              alt="Shizen Food"
+              class="sidebar-logo-img"
+            />
+            <button
+              onclick="closeMobileDrawer()"
+              class="sidebar-close-btn"
+              aria-label="Cerrar menú"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <!-- Superadmin Profile -->
+          <div class="sidebar-user-card">
+            <div class="user-avatar-circle">AS</div>
+            <div class="user-info-text">
+              <p class="user-name-title">Admin Shizen</p>
+              <p class="user-role-subtitle">Operación Bogotá</p>
+            </div>
+            <span class="user-online-dot"></span>
+          </div>
+        </div>
+
+        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
+        <nav class="sidebar-nav-container">
+          <p class="nav-section-title">Gestión</p>
+          <div class="nav-menu-list">
+            <a href="estadisticas.html" class="sidebar-nav-item active">
+              <i data-lucide="bar-chart-3"></i>
+              <span>Estadísticas</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="pedidos.html" class="sidebar-nav-item">
+              <i data-lucide="shopping-bag"></i>
+              <span>Pedidos</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="usuarios.html" class="sidebar-nav-item">
+              <i data-lucide="user-round"></i>
+              <span>Usuarios</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+          </div>
+        </nav>
+
+        <!-- Superadmin Development Notice Banner -->
+        <div class="sidebar-notice-banner">
+          <div class="notice-icon-box">
+            <i data-lucide="code-2"></i>
+          </div>
+          <div>
+            <p class="notice-title">Estamos trabajando en esto</p>
+            <p class="notice-text">
+              El panel de Superadmin está en desarrollo. Nuevos módulos y
+              herramientas estarán disponibles en futuras versiones.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer Menu -->
+        <div class="sidebar-footer-menu">
+          <a href="soporte.html" class="sidebar-footer-item">
+            <i data-lucide="headphones"></i>
+            <span>Soporte y Tickets</span>
+          </a>
+
+          <a href="notificaciones.html" class="sidebar-footer-item">
+            <i data-lucide="bell"></i>
+            <span>Notificaciones</span>
+            <span
+              id="sidebar-notification-badge"
+              class="notification-count-badge"
+              >3</span
+            >
+          </a>
+
+          <button onclick="handleLogout()" class="sidebar-footer-item">
+            <i data-lucide="log-out"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+      </aside>
+
+      <main id="view-estadisticas" class="view-section active">
+        <div class="view-content-container">
+          <header class="view-header">
+            <div>
+              <div class="view-header-eyebrow">
+                <span>Métricas de Rendimiento</span>
+              </div>
+              <h1 class="view-header-title">Estadísticas</h1>
+              <p class="view-header-subtitle">
+                Indicadores financieros, volumen de pedidos y productos líderes
+                en la red Shizen.
+              </p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px">
+              <button
+                onclick="setAnalyticsPeriod('Mes')"
+                class="analytics-period-btn active"
+                data-period="Mes"
+              >
+                Mes
+              </button>
+              <button
+                onclick="setAnalyticsPeriod('Trimestre')"
+                class="analytics-period-btn"
+                data-period="Trimestre"
+              >
+                Trimestre
+              </button>
+              <button
+                onclick="setAnalyticsPeriod('Año')"
+                class="analytics-period-btn"
+                data-period="Año"
+              >
+                Año
+              </button>
+            </div>
+          </header>
+
+          <!-- 4 KPI Cards -->
+          <section class="analytics-kpi-grid">
+            <div class="analytics-kpi-card">
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Ingresos Brutos</span>
+                <div class="metric-icon-box">
+                  <i data-lucide="dollar-sign"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val">$850M COP</p>
+              <p class="analytics-kpi-trend">↑ +14.2% vs año anterior</p>
+            </div>
+
+            <div class="analytics-kpi-card">
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Pedidos Totales</span>
+                <div
+                  class="metric-icon-box"
+                  style="background: #fff0e2; color: #c45e0a"
+                >
+                  <i data-lucide="shopping-cart"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val">10.450 ped.</p>
+              <p class="analytics-kpi-trend">↑ +8.6% volumen</p>
+            </div>
+
+            <div class="analytics-kpi-card">
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Margen Operativo</span>
+                <div class="metric-icon-box">
+                  <i data-lucide="target"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val">$248.5M COP</p>
+              <p class="analytics-kpi-trend">↑ 29.2% rentabilidad</p>
+            </div>
+
+            <div class="analytics-kpi-card">
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Ticket Promedio</span>
+                <div
+                  class="metric-icon-box"
+                  style="background: #eceef3; color: #5c6986"
+                >
+                  <i data-lucide="trending-up"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val">$81.340 COP</p>
+              <p class="analytics-kpi-trend">↑ +5.1% ticket</p>
+            </div>
+          </section>
+
+          <!-- Interactive Visualizer & Top Products -->
+          <section class="analytics-chart-grid">
+            <div class="analytics-card">
+              <div class="analytics-card-header">
+                <div>
+                  <h3
+                    style="
+                      font-family: &quot;Outfit&quot;, sans-serif;
+                      font-size: 20px;
+                      font-weight: 700;
+                    "
+                  >
+                    Evolución temporal
+                  </h3>
+                  <p style="font-size: 12px; color: #7b857a; margin-top: 2px">
+                    Comportamiento según la métrica seleccionada
+                  </p>
+                </div>
+                <div class="segmented-control">
+                  <button
+                    onclick="setAnalyticsMetric('revenue')"
+                    data-metric="revenue"
+                    class="analytics-metric-btn active"
+                  >
+                    Ingresos
+                  </button>
+                  <button
+                    onclick="setAnalyticsMetric('orders')"
+                    data-metric="orders"
+                    class="analytics-metric-btn"
+                  >
+                    Pedidos
+                  </button>
+                  <button
+                    onclick="setAnalyticsMetric('profit')"
+                    data-metric="profit"
+                    class="analytics-metric-btn"
+                  >
+                    Utilidad
+                  </button>
+                </div>
+              </div>
+              <div id="analytics-bars-container" class="analytics-bars">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Top 5 Products -->
+            <div
+              class="analytics-card"
+              style="
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+              "
+            >
+              <div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <h3
+                    style="
+                      font-family: &quot;Outfit&quot;, sans-serif;
+                      font-size: 20px;
+                      font-weight: 700;
+                    "
+                  >
+                    Platos más vendidos
+                  </h3>
+                  <span
+                    class="tab-badge"
+                    style="
+                      background: #eef5ea;
+                      color: #397438;
+                      font-weight: 700;
+                    "
+                    >Top 5</span
+                  >
+                </div>
+                <div class="top-products-list">
+                  <div class="top-product-item">
+                    <div>
+                      <p class="top-product-name">Veggie Burger</p>
+                      <p class="top-product-orders">245 órdenes completadas</p>
+                    </div>
+                    <div style="text-align: right">
+                      <p class="top-product-price">$14.580.000 COP</p>
+                      <p class="top-product-trend">↑ +12%</p>
+                    </div>
+                  </div>
+                  <div class="top-product-item">
+                    <div>
+                      <p class="top-product-name">Shizen Express</p>
+                      <p class="top-product-orders">198 órdenes completadas</p>
+                    </div>
+                    <div style="text-align: right">
+                      <p class="top-product-price">$11.880.000 COP</p>
+                      <p class="top-product-trend">↑ +8%</p>
+                    </div>
+                  </div>
+                  <div class="top-product-item">
+                    <div>
+                      <p class="top-product-name">Ensalada Verde</p>
+                      <p class="top-product-orders">176 órdenes completadas</p>
+                    </div>
+                    <div style="text-align: right">
+                      <p class="top-product-price">$8.448.000 COP</p>
+                      <p class="top-product-trend">↑ +15%</p>
+                    </div>
+                  </div>
+                  <div class="top-product-item">
+                    <div>
+                      <p class="top-product-name">Lentejas con Verduras</p>
+                      <p class="top-product-orders">154 órdenes completadas</p>
+                    </div>
+                    <div style="text-align: right">
+                      <p class="top-product-price">$7.392.000 COP</p>
+                      <p class="top-product-trend">↑ +5%</p>
+                    </div>
+                  </div>
+                  <div class="top-product-item">
+                    <div>
+                      <p class="top-product-name">Taboule Especial</p>
+                      <p class="top-product-orders">132 órdenes completadas</p>
+                    </div>
+                    <div style="text-align: right">
+                      <p class="top-product-price">$6.336.000 COP</p>
+                      <p class="top-product-trend" style="color: #c45e0a">
+                        ↓ -3%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Core Application Logic (Pure Vanilla JS) -->
+    <script src="../js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usuarios - SHIZEN Food</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+
+    <!-- Typography: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+      });
+    </script>
+
+    <!-- Dedicated CSS for this page -->
+    <link rel="stylesheet" th:href="@{/usuarios.css}" />
+  </head>
+  <body>
+    <div id="app-main-wrapper" class="app-container">
+      <!-- Mobile Top Header Bar -->
+      <header class="mobile-top-header">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button
+            onclick="toggleMobileDrawer()"
+            class="mobile-menu-btn"
+            aria-label="Abrir menú"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+          <img
+            src="../assets/images/logo.png"
+            alt="Shizen Food"
+            class="mobile-logo"
+          />
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a
+            href="notificaciones.html"
+            class="mobile-menu-btn"
+            aria-label="Notificaciones"
+          >
+            <i data-lucide="bell"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- Mobile Drawer Backdrop -->
+      <div
+        id="mobile-drawer-backdrop"
+        onclick="closeMobileDrawer()"
+        class="mobile-drawer-backdrop"
+      ></div>
+
+      <!-- SHARED APPLICATION SIDEBAR -->
+      <aside id="app-sidebar" class="app-sidebar">
+        <!-- Decorative background blur circles -->
+        <div
+          style="
+            position: absolute;
+            -right: 80px;
+            -top: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 46% 54% 66% 34%;
+            background: rgba(44, 91, 39, 0.7);
+            transform: rotate(12deg);
+            pointer-events: none;
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            -bottom: 96px;
+            -left: 96px;
+            width: 256px;
+            height: 256px;
+            border-radius: 62% 38% 45% 55%;
+            background: rgba(44, 91, 39, 0.55);
+            transform: rotate(-12deg);
+            pointer-events: none;
+          "
+        ></div>
+
+        <!-- Sidebar Header & Logo -->
+        <div class="sidebar-header-box">
+          <div class="sidebar-logo-row">
+            <img
+              src="../assets/images/logo.png"
+              alt="Shizen Food"
+              class="sidebar-logo-img"
+            />
+            <button
+              onclick="closeMobileDrawer()"
+              class="sidebar-close-btn"
+              aria-label="Cerrar menú"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <!-- Superadmin Profile -->
+          <div class="sidebar-user-card">
+            <div class="user-avatar-circle">AS</div>
+            <div class="user-info-text">
+              <p class="user-name-title">Admin Shizen</p>
+              <p class="user-role-subtitle">Operación Bogotá</p>
+            </div>
+            <span class="user-online-dot"></span>
+          </div>
+        </div>
+
+        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
+        <nav class="sidebar-nav-container">
+          <p class="nav-section-title">Gestión</p>
+          <div class="nav-menu-list">
+            <a href="estadisticas.html" class="sidebar-nav-item">
+              <i data-lucide="bar-chart-3"></i>
+              <span>Estadísticas</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="pedidos.html" class="sidebar-nav-item">
+              <i data-lucide="shopping-bag"></i>
+              <span>Pedidos</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+
+            <a href="usuarios.html" class="sidebar-nav-item active">
+              <i data-lucide="user-round"></i>
+              <span>Usuarios</span>
+              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+            </a>
+          </div>
+        </nav>
+
+        <!-- Superadmin Development Notice Banner -->
+        <div class="sidebar-notice-banner">
+          <div class="notice-icon-box">
+            <i data-lucide="code-2"></i>
+          </div>
+          <div>
+            <p class="notice-title">Estamos trabajando en esto</p>
+            <p class="notice-text">
+              El panel de Superadmin está en desarrollo. Nuevos módulos y
+              herramientas estarán disponibles en futuras versiones.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer Menu -->
+        <div class="sidebar-footer-menu">
+          <a href="soporte.html" class="sidebar-footer-item">
+            <i data-lucide="headphones"></i>
+            <span>Soporte y Tickets</span>
+          </a>
+
+          <a href="notificaciones.html" class="sidebar-footer-item">
+            <i data-lucide="bell"></i>
+            <span>Notificaciones</span>
+            <span
+              id="sidebar-notification-badge"
+              class="notification-count-badge"
+              >3</span
+            >
+          </a>
+
+          <button onclick="handleLogout()" class="sidebar-footer-item">
+            <i data-lucide="log-out"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+      </aside>
+
+      <main id="view-usuarios" class="view-section active">
+        <div class="view-content-container">
+          <header class="view-header">
+            <div>
+              <div class="view-header-eyebrow">
+                <span>Administración General</span>
+              </div>
+              <h1 class="view-header-title">Usuarios</h1>
+              <p class="view-header-subtitle">
+                Clientes, negocios y repartidores centralizados para
+                gestionarlos sin cambiar de módulo.
+              </p>
+            </div>
+          </header>
+
+          <!-- Summary Stats Cards -->
+          <section class="users-summary-grid">
+            <div class="users-summary-card">
+              <div class="users-summary-icon" style="background: #35682d">
+                <i data-lucide="users"></i>
+              </div>
+              <div>
+                <p id="users-count-total" class="users-summary-num">6</p>
+                <p class="users-summary-label">Total cuentas</p>
+              </div>
+            </div>
+
+            <div class="users-summary-card">
+              <div class="users-summary-icon" style="background: #4c9540">
+                <i data-lucide="user-round"></i>
+              </div>
+              <div>
+                <p id="users-count-clientes" class="users-summary-num">2</p>
+                <p class="users-summary-label">Clientes</p>
+              </div>
+            </div>
+
+            <div class="users-summary-card">
+              <div class="users-summary-icon" style="background: #f58220">
+                <i data-lucide="store"></i>
+              </div>
+              <div>
+                <p id="users-count-negocios" class="users-summary-num">2</p>
+                <p class="users-summary-label">Negocios</p>
+              </div>
+            </div>
+
+            <div class="users-summary-card">
+              <div class="users-summary-icon" style="background: #687695">
+                <i data-lucide="bike"></i>
+              </div>
+              <div>
+                <p id="users-count-repartidores" class="users-summary-num">2</p>
+                <p class="users-summary-label">Repartidores</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Directory & Actions Table Card -->
+          <section class="table-card">
+            <div class="table-toolbar">
+              <div>
+                <h2 class="table-title">Directorio de cuentas</h2>
+                <p
+                  id="users-count-visible"
+                  style="font-size: 12px; color: #818a80; margin-top: 2px"
+                >
+                  6 de 6 cuentas visibles
+                </p>
+              </div>
+              <!-- 1. Cajita de Búsqueda -->
+              <form
+                th:action="@{/usuarios}"
+                method="get"
+                class="search-input-box"
+              >
+                <i data-lucide="search" class="search-icon"></i>
+                <input
+                  type="text"
+                  name="buscar"
+                  th:value="${buscar}"
+                  id="users-search-input"
+                  placeholder="Buscar por nombre, correo o coincidencia..."
+                  class="search-input"
+                />
+                <!-- Mantiene el filtro de rol actual al buscar -->
+                <input type="hidden" name="rol" th:value="${rolActual}" />
+              </form>
+            </div>
+
+            <!-- 2. Pestañas de Filtro (Centralized Filter Tabs) -->
+            <div style="padding: 12px 20px; border-bottom: 1px solid #e4e9df">
+              <div class="filter-pills-row">
+                <a
+                  th:href="@{/usuarios(rol='Todos', buscar=${buscar})}"
+                  class="user-filter-pill"
+                  th:classappend="${rolActual == 'Todos' or rolActual == null} ? 'active' : ''"
+                >
+                  Todos
+                </a>
+                <a
+                  th:href="@{/usuarios(rol='usuario', buscar=${buscar})}"
+                  class="user-filter-pill"
+                  th:classappend="${rolActual == 'usuario'} ? 'active' : ''"
+                >
+                  Clientes
+                </a>
+                <a
+                  th:href="@{/usuarios(rol='Negocio', buscar=${buscar})}"
+                  class="user-filter-pill"
+                  th:classappend="${rolActual == 'Negocio'} ? 'active' : ''"
+                >
+                  Negocios
+                </a>
+                <a
+                  th:href="@{/usuarios(rol='Repartidor', buscar=${buscar})}"
+                  class="user-filter-pill"
+                  th:classappend="${rolActual == 'Repartidor'} ? 'active' : ''"
+                >
+                  Repartidores
+                </a>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Correo</th>
+                    <th>Dirección</th>
+                    <th>Tipo de cuenta</th>
+                    <th>Estado</th>
+                    <th style="text-align: right">Acciones</th>
+                  </tr>
+                </thead>
+
+                <!-- inyeccion de datos usando th:each -->
+
+                <tbody id="users-table-body">
+                  <tr th:each="u : ${usuarios}">
+                    <td th:text="${u.idUsuario}">1</td>
+                    <td>
+                      <div
+                        style="display: flex; align-items: center; gap: 10px"
+                      >
+                        <div
+                          class="customer-avatar-box"
+                          th:text="${#strings.substring(u.nombre,0,1) + #strings.substring(u.apellido,0,1)}"
+                        >
+                          AB
+                        </div>
+                        <span th:text="${u.nombre + ' ' + u.apellido}"
+                          >Nombre</span
+                        >
+                      </div>
+                    </td>
+                    <td th:text="${u.email}">email</td>
+                    <td th:text="${u.direccion}">dirección</td>
+                    <td th:text="${u.rol}">Cliente</td>
+                    <td>
+                      <span
+                        th:classappend="${u.baneado} ? 'badge-banned' : 'badge-active'"
+                        th:text="${u.baneado} ? 'Baneado' : 'Activo'"
+                        >Activo</span
+                      >
+                    </td>
+                    <td style="text-align: right">
+                      <button
+                        class="btn-icon-action"
+                        th:data-id="${u.idUsuario}"
+                        th:data-nombre="${u.nombre + ' ' + u.apellido}"
+                        th:data-email="${u.email}"
+                        th:data-baneado="${u.baneado}"
+                        th:data-rol="${u.rol}"
+                        onclick="openManageUserModal(this)"
+                        title="Gestionar usuario"
+                      >
+                        <i data-lucide="more-horizontal"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <div id="manage-user-modal" class="modal-overlay">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <div class="modal-header">
+            <div style="display: flex; align-items: center; gap: 12px">
+              <div id="modal-user-initials" class="customer-avatar-box">ML</div>
+              <div>
+                <h2 id="modal-user-name" class="modal-title">
+                  Gestionar cuenta
+                </h2>
+                <p
+                  id="modal-user-type"
+                  style="font-size: 12px; color: #788278; margin-top: 2px"
+                >
+                  Cliente · USR-024
+                </p>
+              </div>
+            </div>
+            <button
+              onclick="closeManageUserModal()"
+              class="modal-close-btn"
+              aria-label="Cerrar modal"
+            >
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <!-- 3 Actions: Baja/Alta, Baneo temporal, Baneo permanente -->
+            <div class="account-actions-grid">
+              <button
+                id="action-btn-estado"
+                onclick="setUserActionType('estado')"
+                class="account-action-card-btn active-estado"
+              >
+                <i
+                  data-lucide="shield-off"
+                  style="width: 18px; height: 18px"
+                ></i>
+                Dar de baja
+              </button>
+              <button
+                id="action-btn-temporal"
+                onclick="setUserActionType('temporal')"
+                class="account-action-card-btn"
+              >
+                <i
+                  data-lucide="shield-ban"
+                  style="width: 18px; height: 18px"
+                ></i>
+                Baneo temporal
+              </button>
+              <button
+                id="action-btn-permanente"
+                onclick="setUserActionType('permanente')"
+                class="account-action-card-btn"
+              >
+                <i
+                  data-lucide="shield-ban"
+                  style="width: 18px; height: 18px"
+                ></i>
+                Baneo permanente
+              </button>
+            </div>
+
+            <div class="modal-account-summary">
+              <div>
+                <p class="account-summary-label">Cuenta</p>
+                <p id="modal-user-email" class="account-summary-val">
+                  maria.lopez@email.com
+                </p>
+              </div>
+              <div>
+                <p class="account-summary-label">Estado actual</p>
+                <p id="modal-user-status" class="account-summary-val">Activo</p>
+              </div>
+            </div>
+
+            <div
+              id="ban-temp-fields"
+              class="form-field-group hidden"
+              style="margin-bottom: 16px"
+            >
+              <label class="form-field-label" for="ban-until-date"
+                >Fecha de finalización</label
+              >
+              <input
+                type="date"
+                id="ban-until-date"
+                min="2026-06-10"
+                max="2026-12-31"
+                value="2026-06-30"
+                class="form-field-input"
+              />
+            </div>
+
+            <div class="form-field-group">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 6px;
+                "
+              >
+                <label
+                  class="form-field-label"
+                  for="ban-reason-input"
+                  style="margin-bottom: 0"
+                  >Razón de la acción</label
+                >
+                <span
+                  id="ban-char-count"
+                  style="font-size: 10px; color: #9aa29a"
+                  >0/300</span
+                >
+              </div>
+              <textarea
+                id="ban-reason-input"
+                rows="4"
+                maxlength="300"
+                placeholder="Explica por qué se realiza esta acción en la cuenta..."
+                class="form-field-textarea"
+              ></textarea>
+              <p style="margin-top: 6px; font-size: 10px; color: #8b948a">
+                Este motivo quedará registrado en el historial de auditoría de
+                la cuenta.
+              </p>
+            </div>
+
+            <div id="ban-alert-banner" class="ban-alert-box warning hidden">
+              <i data-lucide="alert-triangle" class="ban-alert-icon"></i>
+              <p id="ban-alert-text"></p>
+            </div>
+
+            <div class="modal-footer">
+              <button onclick="closeManageUserModal()" class="btn-modal-cancel">
+                Cancelar
+              </button>
+              <button
+                id="confirm-action-btn"
+                onclick="handleUserActionConfirm()"
+                disabled
+                class="btn-modal-confirm"
+              >
+                Confirmar acción
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="action-user-form" method="post" style="display: none">
+      <input type="hidden" name="motivo" id="form-motivo-input" />
+    </form>
+    <!-- Modal acciones -->
+    <script th:src="@{/js/usuarios.js}"></script>
+  </body>
+</html>
