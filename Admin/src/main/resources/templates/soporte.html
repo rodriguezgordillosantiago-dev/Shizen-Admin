@@ -496,6 +496,9 @@
         </div>
       </div>
     </div>
+    <script th:inline="javascript">
+      const ADMIN_ID = /*[[${adminId}]]*/ null;
+    </script>
     <script th:src="@{/js/websocket.js}"></script>
     <script th:src="@{/js/soporte.js}"></script>
   </body>

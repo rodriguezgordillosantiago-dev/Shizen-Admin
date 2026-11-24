@@ -9,5 +9,5 @@ import java.util.List;
 public interface NotificacionRepository
 extends JpaRepository<Notificacion, Integer>
 {
-    List<Notificacion> findAllByOrderByFechaCreacionDesc();
+    List<Notificacion> findAllByAudienciaOrderByFechaCreacionDesc(String audiencia);
 }

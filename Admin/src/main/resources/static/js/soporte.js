@@ -124,7 +124,7 @@ function cargarHistorial(ticketId, descripcionInicial) {
 // Pinta una burbuja en el contenedor de mensajes
 function dibujarBurbujaMensaje(m) {
   const msgContainer = document.getElementById("support-chat-messages");
-  const esAgente = m.idRemitente != null;
+  const esAgente = ADMIN_ID != null && m.idRemitente === ADMIN_ID;
   const clase = esAgente ? "agent" : "customer";
   const fecha = m.fechaEnvio
     ? new Date(m.fechaEnvio).toLocaleTimeString([], {

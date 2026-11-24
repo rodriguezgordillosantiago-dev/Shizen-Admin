@@ -19,7 +19,7 @@ public class NotificacionesController {
 
     @GetMapping({"/notificaciones", "/notificaciones.html"})
     public String listarNotificaciones(Model model) {
-        List<Notificacion> lista = notificacionRepository.findAllByOrderByFechaCreacionDesc();
+        List<Notificacion> lista = notificacionRepository.findAllByAudienciaOrderByFechaCreacionDesc("admin");
         model.addAttribute("notificaciones", lista);
         return "notificaciones";
     }

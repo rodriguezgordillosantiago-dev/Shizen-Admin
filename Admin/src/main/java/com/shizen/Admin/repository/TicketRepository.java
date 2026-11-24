@@ -16,4 +16,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
         //Filtro por estado
 
         List<Ticket> findByEstadoOrderByFechaCreacionDesc(String estado);
+
+        //Limite de bandeja asignado a 15
+ 
+        long countByEstado(String estado);
 }

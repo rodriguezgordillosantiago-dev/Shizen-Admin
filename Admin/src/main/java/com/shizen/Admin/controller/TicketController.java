@@ -35,6 +35,7 @@ public class TicketController {
         this.conversacionRepository = conversacionRepository;
         this.mensajeRepository = mensajeRepository;
         this.messagingTemplate = messagingTemplate;
+        
 
     }
 
@@ -42,10 +43,17 @@ public class TicketController {
 
 //Listar los tickects en la bandeja de entrada
 @GetMapping ({"/soporte", "/soporte.html"})
-public String listarTickets(Model model)
+public String listarTickets(Model model, Principal principal)
 {
       List<Ticket> lista = ticketRepository.findAllByOrderByFechaCreacionDesc();
     model.addAttribute("tickets", lista);
+
+    if (principal != null) {
+        usuarioRepository.findByEmail(principal.getName()).ifPresent( u -> {
+
+            model.addAttribute("adminId", u.getIdUsuario());
+        });
+    }
     return "soporte";
 }
 
@@ -63,6 +71,7 @@ public String listarTickets(Model model)
                 t.setIdUsuario(u.getIdUsuario());
             });
         }
+
 
         ticketRepository.save(t);
 
@@ -123,10 +132,12 @@ public String listarTickets(Model model)
 
     @MessageMapping 
     ("/chat/{idTicket}")
+    
     public void 
     enviarMensajeWebSocket(@DestinationVariable Integer idTicket, Map<String, String> payload,
 
     Principal principal) {
+
         Conversacion conv = conversacionRepository.findByIdTicket(idTicket).orElseThrow();
 
         Mensaje m = new Mensaje();
@@ -142,6 +153,15 @@ public String listarTickets(Model model)
             });
         }
     Mensaje guardado = mensajeRepository.save(m);
+
+
+    //Asignar un admin al ticket si no lo tiene
+
+    Ticket ticket = ticketRepository.findById(idTicket).orElse(null);
+    if (ticket != null && ticket.getIdAdminAsignado() == null && m.getIdRemitente() != null) {
+        ticket.setIdAdminAsignado(m.getIdRemitente());
+        ticketRepository.save(ticket);
+    }
 
     //retransmitir / hacer que todos los conectados al chat de ticket "Canal" puedan verlo en vivo
 
