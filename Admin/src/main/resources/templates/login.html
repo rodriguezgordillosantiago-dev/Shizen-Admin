@@ -132,9 +132,31 @@
               </div>
             </div>
 
-            <p id="standalone-error" class="alert-error hidden"></p>
+            <!-- Mensaje de error de Spring Security (si las credenciales fallaron al enviar) -->
+            <!-- th:if devuelve el login al rechazarlo haciendo que thymeleaf dibuje el aviso de campos equivocados-->
+            <p
+              th:if="${param.error}"
+              id="standalone-server-error"
+              class="alert-error"
+              style="margin-bottom: 12px"
+            >
+              Correo o contraseña incorrectos. Por favor, verifica tus datos.
+            </p>
 
-            <button type="submit" id="standalone-btn" class="btn-primary-login">
+            <!-- Mensaje de error en tiempo real que maneja JavaScript -->
+            <p
+              id="standalone-error"
+              class="alert-error hidden"
+              style="margin-bottom: 12px"
+            ></p>
+
+            <!-- el botón estara deshabilitado hasta que los inputs sean válidos -->
+            <button
+              type="submit"
+              id="standalone-btn"
+              disabled
+              class="btn-primary-login"
+            >
               <span id="standalone-btn-text">Ingresar al panel</span>
               <i
                 data-lucide="arrow-right"

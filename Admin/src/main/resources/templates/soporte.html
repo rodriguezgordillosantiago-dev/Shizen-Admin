@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="es">
   <head>
+
+    <!-- Animaciones Sweet alert-->
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
     <!-- Librerías cliente para WebSocket -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -494,10 +497,21 @@
             </div>
           </form>
         </div>
+       <script th:inline="javascript">
+  const ADMIN_ID = /*[[${adminId}]]*/ null;
+  const ticketCreado = /*[[${ticketCreado}]]*/ false;
+  const ticketAsunto = /*[[${ticketAsunto}]]*/ "";
+  if (ticketCreado) {
+    Swal.fire({
+      icon: "success",
+      title: "¡Ticket creado!",
+      text: "El ticket \"" + ticketAsunto + "\" fue registrado en la bandeja.",
+      confirmButtonColor: "#2c5b27"
+    });
+  }
+</script>
       </div>
     </div>
-    <script th:inline="javascript">
-      const ADMIN_ID = /*[[${adminId}]]*/ null;
     </script>
     <script th:src="@{/js/websocket.js}"></script>
     <script th:src="@{/js/soporte.js}"></script>

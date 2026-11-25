@@ -1,11 +1,56 @@
 let ticketActualId = null;
 let canalActual = null;
 
+// Sonido de notificacion
+
+const sonidoNotificacion = new Audio("/assets/audio/notificacion_prueba.mp3");
+sonidoNotificacion.volume = 0.7;
+
+function reproducirSonidoNotificacion() {
+  sonidoNotificacion.currentTime = 0;
+  sonidoNotificacion.play().catch((e) => {
+    console.warn("El audio no se pudo reproducir:", e);
+  });
+}
 // Inicialización de la pantalla
 document.addEventListener("DOMContentLoaded", () => {
   if (window.lucide) {
     lucide.createIcons();
   }
+
+  //Validaciones en tiempo real
+
+  function validarNuevoTicket() {
+    const customer = document.getElementById("ticket-customer");
+    const subject = document.getElementById("ticket-subject");
+    const message = document.getElementById("ticket-message");
+    const submitBtn = document.querySelector(
+      "#new-ticket-form .btn-modal-confirm",
+    );
+
+    if (!customer || !subject || !message || !submitBtn) return;
+
+    const clienteOk = customer.value.trim().length >= 3;
+    const asuntoOk = subject.value.trim().length >= 5;
+    const mensajeOk = message.value.trim().length >= 10;
+
+    // Borde visual, aparece si el usuario ya ha escrito algo
+    customer.style.borderColor =
+      customer.value === "" ? "" : clienteOk ? "#2c5b27" : "#dc2626";
+    subject.style.borderColor =
+      subject.value === "" ? "" : asuntoOk ? "#2c5b27" : "#dc2626";
+    message.style.borderColor =
+      message.value === "" ? "" : mensajeOk ? "#2c5b27" : "#dc2626";
+
+    submitBtn.disabled = !(clienteOk && asuntoOk && mensajeOk);
+  }
+
+  ["ticket-customer", "ticket-subject", "ticket-message"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", validarNuevoTicket);
+  });
+  validarNuevoTicket();
+
   // Conectar el socket al entrar a la pantalla
   iniciarWebSocket(() => {
     console.log("Servicio de chat en vivo listo para usar.");
@@ -92,8 +137,15 @@ function seleccionarTicket(item) {
     desuscribirseDeCanal(canalActual);
   }
   canalActual = "/topic/ticket/" + ticketActualId;
+
+  //lee cuando hay un nuevo mensaje
+
   suscribirseACanal(canalActual, (nuevoMensaje) => {
     dibujarBurbujaMensaje(nuevoMensaje);
+
+    if (ADMIN_ID == null || nuevoMensaje.idRemitente !== ADMIN_ID) {
+      reproducirSonidoNotificacion();
+    }
   });
 }
 

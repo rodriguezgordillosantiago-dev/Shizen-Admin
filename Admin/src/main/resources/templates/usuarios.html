@@ -24,6 +24,9 @@
 
     <!-- Dedicated CSS for this page -->
     <link rel="stylesheet" th:href="@{/usuarios.css}" />
+
+    <!-- Script sweetalert para alertas de confirmacion-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div id="app-main-wrapper" class="app-container">
@@ -526,7 +529,8 @@
     <form id="action-user-form" method="post" style="display: none">
       <input type="hidden" name="motivo" id="form-motivo-input" />
     </form>
-    <!-- Modal acciones -->
+
+    <!-- Scripts -->
     <script th:src="@{/js/usuarios.js}"></script>
   </body>
 </html>

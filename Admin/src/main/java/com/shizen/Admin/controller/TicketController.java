@@ -2,7 +2,7 @@ package com.shizen.Admin.controller;
 
 import com.shizen.Admin.repository.UsuarioRepository;
 import com.shizen.Admin.model.Ticket;
-import com.shizen.Admin.model.Usuario;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.shizen.Admin.repository.TicketRepository;
 import com.shizen.Admin.model.Conversacion;
 import com.shizen.Admin.model.Mensaje;
@@ -58,7 +58,7 @@ public String listarTickets(Model model, Principal principal)
 }
 
     @PostMapping("/soporte/crear")
-    public String crearTicket(@RequestParam String asunto, @RequestParam String descripcion, @RequestParam(required = false) Integer idPedido, Principal principal) {
+    public String crearTicket(@RequestParam String asunto, @RequestParam String descripcion, @RequestParam(required = false) Integer idPedido, Principal principal, RedirectAttributes redirectAttributes) {
         Ticket t = new Ticket();
         t.setAsunto(asunto);
         t.setDescripcion(descripcion);
@@ -77,13 +77,18 @@ public String listarTickets(Model model, Principal principal)
 
             // Crear conversacion ligada al ticket de ayuda
     Conversacion c = new Conversacion();
-    c.setTipo("SOPORTE");
-    c.setIdTicket(t.getIdTicket());
-    c.setFechaCreacion(LocalDateTime.now());
-    conversacionRepository.save(c);    
+        c.setTipo("SOPORTE");
+        c.setIdTicket(t.getIdTicket());
+        c.setFechaCreacion(LocalDateTime.now());
+        conversacionRepository.save(c);    
+        redirectAttributes.addFlashAttribute("ticketCreado", true);
+        redirectAttributes.addFlashAttribute("ticketAsunto", t.getAsunto());
         return "redirect:/soporte";
     
     }
+
+
+
 
     // Cerrar / Resolver Ticket
     @PostMapping("/soporte/{id}/cerrar")
