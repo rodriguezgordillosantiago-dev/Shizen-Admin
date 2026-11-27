@@ -3,6 +3,7 @@ package com.shizen.Admin.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+/** Vincula los mensajes de soporte con el ticket al que pertenecen. */
 @Entity 
 @Table(name = "conversacion")
 public class Conversacion {

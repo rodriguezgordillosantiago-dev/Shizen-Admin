@@ -6,10 +6,9 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-
+/** Configura la conexión STOMP usada para actualizar el chat de soporte en vivo. */
 @Configuration 
 @EnableWebSocketMessageBroker //Activa el servidor del websocker con el protocolo alternativo de STOMP
-
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 @Override

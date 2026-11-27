@@ -3,6 +3,7 @@ package com.shizen.Admin.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+/** Representa un mensaje guardado dentro de una conversación. */
 @Entity
 @Table(name = "mensaje")
 public class Mensaje {

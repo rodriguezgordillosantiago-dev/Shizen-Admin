@@ -6,7 +6,7 @@
     <title>Usuarios - SHIZEN Food</title>
     <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
 
-    <!-- Typography: Inter & Outfit -->
+    <!-- Tipografías: Inter y Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
 
-    <!-- Lucide Icons -->
+    <!-- Íconos de Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -22,15 +22,17 @@
       });
     </script>
 
-    <!-- Dedicated CSS for this page -->
+    <!-- Estilos específicos de esta página -->
     <link rel="stylesheet" th:href="@{/usuarios.css}" />
+    <!-- Estilos de la barra lateral píldora -->
+    <link rel="stylesheet" th:href="@{/sidebar-pill.css}" />
 
     <!-- Script sweetalert para alertas de confirmacion-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div id="app-main-wrapper" class="app-container">
-      <!-- Mobile Top Header Bar -->
+      <!-- Barra superior móvil -->
       <header class="mobile-top-header">
         <div style="display: flex; align-items: center; gap: 8px">
           <button
@@ -57,132 +59,82 @@
         </div>
       </header>
 
-      <!-- Mobile Drawer Backdrop -->
+      <!-- Fondo del menú lateral móvil -->
       <div
         id="mobile-drawer-backdrop"
         onclick="closeMobileDrawer()"
         class="mobile-drawer-backdrop"
       ></div>
 
-      <!-- SHARED APPLICATION SIDEBAR -->
-      <aside id="app-sidebar" class="app-sidebar">
-        <!-- Decorative background blur circles -->
-        <div
-          style="
-            position: absolute;
-            -right: 80px;
-            -top: 96px;
-            width: 256px;
-            height: 256px;
-            border-radius: 46% 54% 66% 34%;
-            background: rgba(44, 91, 39, 0.7);
-            transform: rotate(12deg);
-            pointer-events: none;
-          "
-        ></div>
-        <div
-          style="
-            position: absolute;
-            -bottom: 96px;
-            -left: 96px;
-            width: 256px;
-            height: 256px;
-            border-radius: 62% 38% 45% 55%;
-            background: rgba(44, 91, 39, 0.55);
-            transform: rotate(-12deg);
-            pointer-events: none;
-          "
-        ></div>
+      <!-- Definición de íconos SVG para la barra píldora -->
+      <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+        <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M12 20V5M19 20v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-support" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-4.3-4.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-chev" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      </svg>
 
-        <!-- Sidebar Header & Logo -->
-        <div class="sidebar-header-box">
-          <div class="sidebar-logo-row">
-            <img
-              src="../assets/images/logo.png"
-              alt="Shizen Food"
-              class="sidebar-logo-img"
-            />
-            <button
-              onclick="closeMobileDrawer()"
-              class="sidebar-close-btn"
-              aria-label="Cerrar menú"
-            >
-              <i data-lucide="x"></i>
-            </button>
-          </div>
-
-          <!-- Superadmin Profile -->
-          <div class="sidebar-user-card">
-            <div class="user-avatar-circle">AS</div>
-            <div class="user-info-text">
-              <p class="user-name-title">Admin Shizen</p>
-              <p class="user-role-subtitle">Operación Bogotá</p>
-            </div>
-            <span class="user-online-dot"></span>
-          </div>
+      <!-- BARRA LATERAL PÍLDORA -->
+      <nav class="pill-sidebar" id="pill-sidebar" aria-label="Navegación Admin">
+        <div class="pill-side-top">
+          <button class="pill-side-toggle" id="pill-side-toggle" type="button" aria-label="Contraer menú" aria-expanded="true">
+            <svg width="18" height="18"><use href="#i-chev"/></svg>
+          </button>
+          <label class="pill-side-search">
+            <svg width="16" height="16"><use href="#i-search"/></svg>
+            <input type="search" id="pill-nav-search" placeholder="Buscar módulo..." aria-label="Buscar">
+          </label>
         </div>
 
-        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
-        <nav class="sidebar-nav-container">
-          <p class="nav-section-title">Gestión</p>
-          <div class="nav-menu-list">
-            <a href="estadisticas.html" class="sidebar-nav-item">
-              <i data-lucide="bar-chart-3"></i>
-              <span>Estadísticas</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+        <ul class="pill-side-nav" id="pill-nav-list">
+          <li>
+            <a th:href="@{/estadisticas}" href="estadisticas.html" data-title="Estadísticas">
+              <svg width="20" height="20"><use href="#i-chart"/></svg>
+              <span class="pill-side-label">Estadísticas</span>
             </a>
-
-            <a href="pedidos.html" class="sidebar-nav-item">
-              <i data-lucide="shopping-bag"></i>
-              <span>Pedidos</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+          </li>
+          <li>
+            <a th:href="@{/pedidos}" href="pedidos.html" data-title="Pedidos">
+              <svg width="20" height="20"><use href="#i-box"/></svg>
+              <span class="pill-side-label">Pedidos</span>
             </a>
-
-            <a href="usuarios.html" class="sidebar-nav-item active">
-              <i data-lucide="user-round"></i>
-              <span>Usuarios</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+          </li>
+          <li>
+            <a th:href="@{/usuarios}" href="usuarios.html" data-title="Usuarios" aria-current="page">
+              <svg width="20" height="20"><use href="#i-users"/></svg>
+              <span class="pill-side-label">Usuarios</span>
             </a>
+          </li>
+          <li>
+            <a th:href="@{/soporte}" href="soporte.html" data-title="Soporte y Tickets">
+              <svg width="20" height="20"><use href="#i-support"/></svg>
+              <span class="pill-side-label">Soporte y Tickets</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/notificaciones}" href="notificaciones.html" data-title="Notificaciones">
+              <svg width="20" height="20"><use href="#i-bell"/></svg>
+              <span class="pill-side-label">Notificaciones</span>
+              <span class="pill-side-badge">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="pill-side-user">
+          <span class="pill-side-avatar" aria-hidden="true">AS</span>
+          <div class="pill-side-user-info">
+            <span class="pill-side-user-name">Admin Shizen</span>
+            <span class="pill-side-user-sub">Operación Bogotá</span>
           </div>
-        </nav>
-
-        <!-- Superadmin Development Notice Banner -->
-        <div class="sidebar-notice-banner">
-          <div class="notice-icon-box">
-            <i data-lucide="code-2"></i>
-          </div>
-          <div>
-            <p class="notice-title">Estamos trabajando en esto</p>
-            <p class="notice-text">
-              El panel de Superadmin está en desarrollo. Nuevos módulos y
-              herramientas estarán disponibles en futuras versiones.
-            </p>
-          </div>
-        </div>
-
-        <!-- Sidebar Footer Menu -->
-        <div class="sidebar-footer-menu">
-          <a href="soporte.html" class="sidebar-footer-item">
-            <i data-lucide="headphones"></i>
-            <span>Soporte y Tickets</span>
-          </a>
-
-          <a href="notificaciones.html" class="sidebar-footer-item">
-            <i data-lucide="bell"></i>
-            <span>Notificaciones</span>
-            <span
-              id="sidebar-notification-badge"
-              class="notification-count-badge"
-              >3</span
-            >
-          </a>
-
-          <button onclick="handleLogout()" class="sidebar-footer-item">
-            <i data-lucide="log-out"></i>
-            <span>Cerrar sesión</span>
+          <button onclick="handleLogout()" class="pill-side-logout" title="Cerrar sesión" aria-label="Cerrar sesión">
+            <svg width="18" height="18"><use href="#i-logout"/></svg>
           </button>
         </div>
-      </aside>
+      </nav>
 
       <main id="view-usuarios" class="view-section active">
         <div class="view-content-container">
@@ -199,113 +151,218 @@
             </div>
           </header>
 
-          <!-- Summary Stats Cards -->
-          <section class="users-summary-grid">
-            <div class="users-summary-card">
-              <div class="users-summary-icon" style="background: #35682d">
-                <i data-lucide="users"></i>
+          <!-- Fila de métricas KPI (estilo Pedidos) -->
+          <section class="metrics-row-3">
+            <!-- Métrica destacada: total de cuentas -->
+            <div class="metric-card featured">
+              <div class="metric-top-bar">
+                <div class="metric-icon-box">
+                  <i data-lucide="users"></i>
+                </div>
+                <span class="metric-trend-pill" th:text="${porcentajeActivos + '% activas'}">100% activas</span>
               </div>
-              <div>
-                <p id="users-count-total" class="users-summary-num">6</p>
-                <p class="users-summary-label">Total cuentas</p>
-              </div>
-            </div>
-
-            <div class="users-summary-card">
-              <div class="users-summary-icon" style="background: #4c9540">
-                <i data-lucide="user-round"></i>
-              </div>
-              <div>
-                <p id="users-count-clientes" class="users-summary-num">2</p>
-                <p class="users-summary-label">Clientes</p>
+              <p class="metric-label-title">Total cuentas</p>
+              <div class="metric-value-row">
+                <p id="users-count-total" class="metric-huge-number" th:text="${totalCuentas}">0</p>
+                <p class="metric-subdetail" th:text="${totalActivos + ' activas · ' + totalBaneados + ' baneadas'}">0 activas</p>
               </div>
             </div>
 
-            <div class="users-summary-card">
-              <div class="users-summary-icon" style="background: #f58220">
-                <i data-lucide="store"></i>
+            <!-- Métrica: clientes -->
+            <div class="metric-card">
+              <div class="metric-top-bar">
+                <div class="metric-icon-box">
+                  <i data-lucide="user-round"></i>
+                </div>
+                <span class="metric-trend-pill" th:text="${porcentajeClientes + '% del total'}">0% del total</span>
               </div>
-              <div>
-                <p id="users-count-negocios" class="users-summary-num">2</p>
-                <p class="users-summary-label">Negocios</p>
+              <p class="metric-label-title">Clientes</p>
+              <div class="metric-value-row">
+                <p id="users-count-clientes" class="metric-huge-number" th:text="${totalClientes}">0</p>
+                <p class="metric-subdetail" th:text="${cuentasVisibles + ' visibles en tabla'}">0 visibles</p>
               </div>
             </div>
 
-            <div class="users-summary-card">
-              <div class="users-summary-icon" style="background: #687695">
-                <i data-lucide="bike"></i>
+            <!-- Métrica: negocios y repartidores -->
+            <div class="metric-card">
+              <div class="metric-top-bar">
+                <div class="metric-icon-box">
+                  <i data-lucide="store"></i>
+                </div>
+                <span class="metric-trend-pill" th:text="${totalRepartidores + ' repartidores'}">0 repartidores</span>
               </div>
-              <div>
-                <p id="users-count-repartidores" class="users-summary-num">2</p>
-                <p class="users-summary-label">Repartidores</p>
+              <p class="metric-label-title">Negocios y repartidores</p>
+              <div class="metric-value-row">
+                <p id="users-count-negocios" class="metric-huge-number" th:text="${totalNegocios + totalRepartidores}">0</p>
+                <p class="metric-subdetail" th:text="${totalNegocios + ' negocios · ' + totalRepartidores + ' repart.'}">0 negocios</p>
               </div>
             </div>
           </section>
 
-          <!-- Directory & Actions Table Card -->
+          <!-- Resumen de actividad y moderación -->
+          <section class="activity-peak-grid">
+            <!-- Registros por mes -->
+            <div class="activity-card">
+              <div class="activity-header">
+                <div>
+                  <p class="activity-eyebrow">Crecimiento de cuentas</p>
+                  <h2 class="activity-title">Registros por mes</h2>
+                </div>
+                <span class="badge-live">
+                  <span class="pulse-dot"></span> Últimos 12 meses
+                </span>
+              </div>
+              <div class="activity-bars-container" id="users-activity-chart" style="position: relative;">
+                <div class="activity-bar-col" th:each="m : ${registrosMensuales}"
+                     th:data-mes="${m.mes}"
+                     th:data-cantidad="${m.cantidad}"
+                     style="cursor: pointer;">
+                  <div class="activity-bar-fill"
+                       th:classappend="${m.destacado} ? 'highlight' : ''"
+                       th:style="'height:' + ${m.altura} + '%'"></div>
+                </div>
+                <div id="users-chart-tooltip" style="display:none;position:absolute;transform:translate(-50%,-100%);background:#fff;border:2px solid #39783D;border-radius:8px;padding:5px 9px;font-size:12px;line-height:1.3;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.14);pointer-events:none;white-space:nowrap;z-index:20;"></div>
+              </div>
+              <div class="activity-time-labels">
+                <span th:each="m, iter : ${registrosMensuales}"
+                      th:if="${iter.index == 0 or iter.index == 3 or iter.index == 7 or iter.index == 11}"
+                      th:text="${m.mes}">Mes</span>
+              </div>
+            </div>
+
+            <!-- Estado y moderación -->
+            <div class="peak-card">
+              <div>
+                <p class="peak-eyebrow">Estado de cuentas</p>
+                <h2 class="peak-title" th:text="${totalActivos + ' Activas'}">0 Activas</h2>
+                <p class="peak-desc"
+                   th:text="${porcentajeActivos + '% de las cuentas registradas están habilitadas en la plataforma.'}">
+                  Resumen de cuentas habilitadas.
+                </p>
+              </div>
+              <div class="peak-footer">
+                <span>Cuentas restringidas</span>
+                <span style="color: #ff9f43; font-weight: 700;" th:text="${totalBaneados + ' baneadas'}">0 baneadas</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Directorio y acciones -->
           <section class="table-card">
             <div class="table-toolbar">
               <div>
                 <h2 class="table-title">Directorio de cuentas</h2>
                 <p
                   id="users-count-visible"
-                  style="font-size: 12px; color: #818a80; margin-top: 2px"
+                  style="font-size: 13px; color: #5d6659; margin-top: 2px"
+                  th:text="${cuentasVisibles + ' de ' + totalCuentas + ' cuentas visibles'}"
                 >
-                  6 de 6 cuentas visibles
+                  0 de 0 cuentas visibles
                 </p>
               </div>
-              <!-- 1. Cajita de Búsqueda -->
               <form
                 th:action="@{/usuarios}"
                 method="get"
-                class="search-input-box"
+                id="form-buscar-usuario"
+                class="flt-search"
               >
-                <i data-lucide="search" class="search-icon"></i>
+                <i data-lucide="search"></i>
                 <input
                   type="text"
                   name="buscar"
                   th:value="${buscar}"
                   id="users-search-input"
                   placeholder="Buscar por nombre, correo o coincidencia..."
-                  class="search-input"
+                  aria-label="Buscar"
                 />
-                <!-- Mantiene el filtro de rol actual al buscar -->
+                <button
+                  id="users-filter-toggle"
+                  type="button"
+                  class="flt-fbtn"
+                  onclick="toggleUsersFilters()"
+                  aria-label="Filtros"
+                  title="Filtros"
+                  aria-expanded="false"
+                >
+                  <i data-lucide="filter"></i>
+                  <span class="flt-dot" id="users-filter-dot" hidden></span>
+                </button>
                 <input type="hidden" name="rol" th:value="${rolActual}" />
+                <input type="hidden" name="baneado" id="hid-baneado" th:value="${baneadoActual}" />
+                <input type="hidden" name="desde" id="hid-desde" th:value="${desdeActual}" />
+                <input type="hidden" name="hasta" id="hid-hasta" th:value="${hastaActual}" />
               </form>
             </div>
 
-            <!-- 2. Pestañas de Filtro (Centralized Filter Tabs) -->
-            <div style="padding: 12px 20px; border-bottom: 1px solid #e4e9df">
-              <div class="filter-pills-row">
+            <div class="flt-sec">
+              <div class="flt-tabs">
                 <a
-                  th:href="@{/usuarios(rol='Todos', buscar=${buscar})}"
-                  class="user-filter-pill"
-                  th:classappend="${rolActual == 'Todos' or rolActual == null} ? 'active' : ''"
+                  th:href="@{/usuarios(rol='Todos', buscar=${buscar}, baneado=${baneadoActual}, desde=${desdeActual}, hasta=${hastaActual})}"
+                  class="flt-tab"
+                  th:attr="aria-pressed=${rolActual == 'Todos' or rolActual == null}"
                 >
-                  Todos
+                  Todos <span class="n" th:text="${totalCuentas}">0</span>
                 </a>
                 <a
-                  th:href="@{/usuarios(rol='usuario', buscar=${buscar})}"
-                  class="user-filter-pill"
-                  th:classappend="${rolActual == 'usuario'} ? 'active' : ''"
+                  th:href="@{/usuarios(rol='usuario', buscar=${buscar}, baneado=${baneadoActual}, desde=${desdeActual}, hasta=${hastaActual})}"
+                  class="flt-tab"
+                  th:attr="aria-pressed=${rolActual == 'usuario'}"
                 >
-                  Clientes
+                  Clientes <span class="n" th:text="${totalClientes}">0</span>
                 </a>
                 <a
-                  th:href="@{/usuarios(rol='Negocio', buscar=${buscar})}"
-                  class="user-filter-pill"
-                  th:classappend="${rolActual == 'Negocio'} ? 'active' : ''"
+                  th:href="@{/usuarios(rol='Negocio', buscar=${buscar}, baneado=${baneadoActual}, desde=${desdeActual}, hasta=${hastaActual})}"
+                  class="flt-tab"
+                  th:attr="aria-pressed=${rolActual == 'Negocio'}"
                 >
-                  Negocios
+                  Negocios <span class="n" th:text="${totalNegocios}">0</span>
                 </a>
                 <a
-                  th:href="@{/usuarios(rol='Repartidor', buscar=${buscar})}"
-                  class="user-filter-pill"
-                  th:classappend="${rolActual == 'Repartidor'} ? 'active' : ''"
+                  th:href="@{/usuarios(rol='Repartidor', buscar=${buscar}, baneado=${baneadoActual}, desde=${desdeActual}, hasta=${hastaActual})}"
+                  class="flt-tab"
+                  th:attr="aria-pressed=${rolActual == 'Repartidor'}"
                 >
-                  Repartidores
+                  Repartidores <span class="n" th:text="${totalRepartidores}">0</span>
                 </a>
               </div>
+
+              <div class="flt-pwrap" id="users-multifilter-panel">
+                <div class="flt-pin">
+                  <form th:action="@{/usuarios}" method="get" id="users-multifilter-form" class="flt-panel">
+                    <input type="hidden" name="buscar" th:value="${buscar}" />
+                    <input type="hidden" name="rol" th:value="${rolActual}" />
+
+                    <div class="flt-fld">
+                      <label class="flt-lbl" for="users-filter-baneado">Estado cuenta</label>
+                      <select id="users-filter-baneado" name="baneado">
+                        <option value="todos" th:selected="${baneadoActual == 'todos' or baneadoActual == null}">Todas</option>
+                        <option value="activo" th:selected="${baneadoActual == 'activo'}">Activa</option>
+                        <option value="baneado" th:selected="${baneadoActual == 'baneado'}">Baneada</option>
+                      </select>
+                      <i data-lucide="chevron-down"></i>
+                    </div>
+
+                    <div class="flt-fld">
+                      <label class="flt-lbl" for="users-filter-desde">Registro desde</label>
+                      <input id="users-filter-desde" type="date" name="desde" th:value="${desdeActual}" />
+                      <i data-lucide="calendar"></i>
+                    </div>
+
+                    <div class="flt-fld">
+                      <label class="flt-lbl" for="users-filter-hasta">Registro hasta</label>
+                      <input id="users-filter-hasta" type="date" name="hasta" th:value="${hastaActual}" />
+                      <i data-lucide="calendar"></i>
+                    </div>
+
+                    <div class="flt-acts">
+                      <button type="submit" class="flt-go">Filtrar</button>
+                      <a th:href="@{/usuarios}" class="flt-clr"><i data-lucide="eraser"></i>Limpiar filtros</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="flt-chips" id="users-filter-chips"></div>
             </div>
 
             <div class="table-responsive">
@@ -333,11 +390,21 @@
                       >
                         <div
                           class="customer-avatar-box"
-                          th:text="${#strings.substring(u.nombre,0,1) + #strings.substring(u.apellido,0,1)}"
+                          style="overflow: hidden; position: relative;"
                         >
-                          AB
+                          <img
+                            th:if="${fotosPorUsuario != null and fotosPorUsuario[u.idUsuario] != null}"
+                            th:src="${fotosPorUsuario[u.idUsuario]}"
+                            alt="Foto"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                            onerror="this.style.display='none'; if(this.nextElementSibling){this.nextElementSibling.style.display='inline';}"
+                          />
+                          <span
+                            th:style="${fotosPorUsuario != null and fotosPorUsuario[u.idUsuario] != null} ? 'display:none' : ''"
+                            th:text="${(u.nombre != null and !#strings.isEmpty(u.nombre) ? #strings.substring(u.nombre,0,1) : '') + (u.apellido != null and !#strings.isEmpty(u.apellido) ? #strings.substring(u.apellido,0,1) : '')}"
+                          >AB</span>
                         </div>
-                        <span th:text="${u.nombre + ' ' + u.apellido}"
+                        <span th:text="${(u.nombre ?: '') + ' ' + (u.apellido ?: '')}"
                           >Nombre</span
                         >
                       </div>
@@ -352,16 +419,40 @@
                         >Activo</span
                       >
                     </td>
-                    <td style="text-align: right">
+                    <td style="text-align: right; white-space: nowrap;">
                       <button
+                        type="button"
                         class="btn-icon-action"
                         th:data-id="${u.idUsuario}"
-                        th:data-nombre="${u.nombre + ' ' + u.apellido}"
+                        th:data-nombre="${(u.nombre ?: '') + ' ' + (u.apellido ?: '')}"
+                        th:data-email="${u.email}"
+                        th:data-direccion="${u.direccion}"
+                        th:data-localidad="${u.localidad}"
+                        th:data-rol="${u.rol}"
+                        th:data-fecharegistro="${u.fechaRegistro != null ? #temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm') : 'Sin registro'}"
+                        th:data-baneado="${u.baneado}"
+                        th:data-motivobaneo="${u.motivoBaneo}"
+                        th:data-fechabaneo="${u.fechaBaneo != null ? #temporals.format(u.fechaBaneo, 'dd/MM/yyyy HH:mm') : ''}"
+                        th:data-foto="${fotosPorUsuario != null ? fotosPorUsuario[u.idUsuario] : ''}"
+                        onclick="openUserDetailModal(this)"
+                        title="Ver detalle"
+                        aria-label="Ver detalle"
+                      >
+                        <i data-lucide="eye"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn-icon-action"
+                        th:data-id="${u.idUsuario}"
+                        th:data-nombre="${(u.nombre ?: '') + ' ' + (u.apellido ?: '')}"
                         th:data-email="${u.email}"
                         th:data-baneado="${u.baneado}"
                         th:data-rol="${u.rol}"
+                        th:data-motivobaneo="${u.motivoBaneo}"
+                        th:data-fechabaneo="${u.fechaBaneo != null ? #temporals.format(u.fechaBaneo, 'dd/MM/yyyy HH:mm') : ''}"
                         onclick="openManageUserModal(this)"
                         title="Gestionar usuario"
+                        aria-label="Gestionar usuario"
                       >
                         <i data-lucide="more-horizontal"></i>
                       </button>
@@ -373,6 +464,73 @@
           </section>
         </div>
       </main>
+
+      <!-- Modal: Ver todos los datos de la cuenta -->
+      <div id="view-user-modal" class="modal-overlay" onclick="closeUserDetailModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <div class="modal-header">
+            <div style="display: flex; align-items: center; gap: 12px">
+              <div id="detail-user-initials" class="customer-avatar-box">US</div>
+              <div>
+                <p id="detail-user-eyebrow" class="modal-eyebrow">USR-001</p>
+                <h2 id="detail-user-name" class="modal-title">Detalle de la cuenta</h2>
+              </div>
+            </div>
+            <button onclick="closeUserDetailModal()" class="modal-close-btn" aria-label="Cerrar modal">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="detail-user-photo-wrap" style="margin-bottom: 16px; display: none; align-items: center; gap: 14px; padding: 12px; border: 1px solid var(--border-light); border-radius: 12px; background: #f9faf6;">
+              <img id="detail-user-photo" src="" alt="Foto de perfil o logo"
+                   style="width: 72px; height: 72px; border-radius: 10px; object-fit: cover; border: 1px solid #d4dace; background: #fff;"
+                   onerror="document.getElementById('detail-user-photo-wrap').style.display='none';" />
+              <div>
+                <p class="account-summary-label" style="margin-bottom: 2px;">Fotografía / Logo registrado</p>
+                <p style="font-size: 12px; color: var(--text-muted);">Imagen asociada a la cuenta de negocio o repartidor.</p>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+              <div>
+                <p class="account-summary-label">Correo electrónico</p>
+                <p id="detail-user-email" class="account-summary-val">—</p>
+              </div>
+              <div>
+                <p class="account-summary-label">Tipo de cuenta</p>
+                <p id="detail-user-rol" class="account-summary-val">—</p>
+              </div>
+              <div>
+                <p class="account-summary-label">Estado</p>
+                <p id="detail-user-status" class="account-summary-val">—</p>
+              </div>
+              <div>
+                <p class="account-summary-label">Fecha de registro</p>
+                <p id="detail-user-fecha" class="account-summary-val">—</p>
+              </div>
+              <div>
+                <p class="account-summary-label">Dirección</p>
+                <p id="detail-user-direccion" class="account-summary-val">—</p>
+              </div>
+              <div>
+                <p class="account-summary-label">Localidad</p>
+                <p id="detail-user-localidad" class="account-summary-val">—</p>
+              </div>
+            </div>
+
+            <div id="detail-user-ban-box" class="ban-alert-box warning hidden" style="margin-top: 16px;">
+              <i data-lucide="shield-ban" class="ban-alert-icon"></i>
+              <div>
+                <p id="detail-user-ban-fecha" style="font-size: 11px; font-weight: 700; margin-bottom: 2px;"></p>
+                <p id="detail-user-ban-motivo" style="font-size: 12px;"></p>
+              </div>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 20px;">
+              <button type="button" onclick="closeUserDetailModal()" class="btn-modal-cancel">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div id="manage-user-modal" class="modal-overlay">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -401,8 +559,27 @@
           </div>
 
           <div class="modal-body">
-            <!-- 3 Actions: Baja/Alta, Baneo temporal, Baneo permanente -->
-            <div class="account-actions-grid">
+            <!-- Panel visual para reactivar cuentas baneadas -->
+            <div id="unban-visual-panel" class="hidden" style="margin-bottom: 16px; border: 1px solid #bbf7d0; background: linear-gradient(135deg, #f0fdf4 0%, #f7faf5 100%); border-radius: 14px; padding: 14px 16px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px; color: #166534; font-weight: 700; font-size: 13px;">
+                  <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
+                  <span>Reactivación de cuenta restringida</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700;">
+                  <span style="padding: 2px 8px; border-radius: 999px; background: #fee2e2; color: #991b1b;">Baneado</span>
+                  <span style="color: #6b7280;">→</span>
+                  <span style="padding: 2px 8px; border-radius: 999px; background: #dcfce7; color: #166534;">Activo</span>
+                </div>
+              </div>
+              <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; font-size: 12px;">
+                <p id="unban-fecha" style="font-size: 11px; font-weight: 700; color: #991b1b; margin-bottom: 4px;">Restringido</p>
+                <p id="unban-motivo-original" style="color: #374151; line-height: 1.4;">Motivo original del baneo</p>
+              </div>
+            </div>
+
+            <!-- Tres acciones: baja/alta, bloqueo temporal y bloqueo permanente -->
+            <div id="ban-actions-wrap" class="account-actions-grid">
               <button
                 id="action-btn-estado"
                 onclick="setUserActionType('estado')"
@@ -479,6 +656,7 @@
                 "
               >
                 <label
+                  id="ban-reason-label"
                   class="form-field-label"
                   for="ban-reason-input"
                   style="margin-bottom: 0"
@@ -526,11 +704,8 @@
       </div>
     </div>
 
-    <form id="action-user-form" method="post" style="display: none">
-      <input type="hidden" name="motivo" id="form-motivo-input" />
-    </form>
-
-    <!-- Scripts -->
+    <!-- Código de la página -->
     <script th:src="@{/js/usuarios.js}"></script>
+    <script th:src="@{/js/sidebar-pill.js}"></script>
   </body>
 </html>

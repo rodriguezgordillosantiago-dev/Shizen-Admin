@@ -13,15 +13,15 @@
       rel="stylesheet"
     />
 
-    <!-- Lucide Icons -->
+    <!-- Íconos de Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Dedicated CSS for login -->
+    <!-- Estilos específicos del inicio de sesión -->
     <!-- Enlace CSS usando Thymeleaf (th:href) -->
     <link rel="stylesheet" th:href="@{/login.css}" />
   </head>
   <body>
     <main class="login-page">
-      <!-- Left branding section (desktop only) -->
+      <!-- Panel de marca izquierdo (solo escritorio) -->
       <section class="login-brand-panel">
         <div class="deco-circle-1"></div>
         <div class="deco-circle-2"></div>
@@ -69,7 +69,7 @@
         </div>
       </section>
 
-      <!-- Right login form section -->
+      <!-- Panel derecho del formulario de inicio de sesión -->
       <section class="login-form-panel">
         <div class="login-deco-circle"></div>
         <div class="login-box">
@@ -83,7 +83,7 @@
             </p>
           </div>
 
-          <!-- Login form - Correo-->
+          <!-- Formulario de inicio de sesión: correo -->
           <form
             id="standalone-login-form"
             th:action="@{/login}"
@@ -106,7 +106,7 @@
               </div>
             </div>
 
-            <!-- Login form - Contraseña-->
+            <!-- Formulario de inicio de sesión: contraseña -->
 
             <div class="form-group">
               <label class="form-label" for="standalone-password"

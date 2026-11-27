@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="'Shizen · Reporte ' + ${reporte.codigoAuditoria}">
+      Shizen · Reporte Administrativo
+    </title>
+    <link rel="icon" type="image/png" th:href="@{/assets/images/favicon.png}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" th:href="@{/sidebar-pill.css}" />
+    <link rel="stylesheet" th:href="@{/auditoria-reporte.css}" />
+  </head>
+  <body>
+    <div id="app-main-wrapper" class="app-container">
+      <svg
+        width="0"
+        height="0"
+        style="position: absolute; width: 0; height: 0; overflow: hidden"
+        aria-hidden="true"
+      >
+        <symbol id="i-chart" viewBox="0 0 24 24">
+          <path
+            d="M5 20v-8M12 20V5M19 20v-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-box" viewBox="0 0 24 24">
+          <path
+            d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-users" viewBox="0 0 24 24">
+          <path
+            d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-support" viewBox="0 0 24 24">
+          <path
+            d="M3 18v-6a9 9 0 0 1 18 0v6M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24">
+          <path
+            d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24">
+          <path
+            d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-4.3-4.3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-chev" viewBox="0 0 24 24">
+          <path
+            d="M15 19l-7-7 7-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24">
+          <path
+            d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+      </svg>
+
+      <nav class="pill-sidebar" id="pill-sidebar" aria-label="Navegación Admin">
+        <div class="pill-side-top">
+          <button
+            class="pill-side-toggle"
+            id="pill-side-toggle"
+            type="button"
+            aria-label="Contraer menú"
+            aria-expanded="true"
+          >
+            <svg width="18" height="18"><use href="#i-chev" /></svg>
+          </button>
+          <label class="pill-side-search">
+            <svg width="16" height="16"><use href="#i-search" /></svg>
+            <input
+              type="search"
+              id="pill-nav-search"
+              placeholder="Buscar módulo..."
+              aria-label="Buscar"
+            />
+          </label>
+        </div>
+
+        <ul class="pill-side-nav" id="pill-nav-list">
+          <li>
+            <a th:href="@{/estadisticas}" data-title="Estadísticas"
+              ><svg width="20" height="20"><use href="#i-chart" /></svg
+              ><span class="pill-side-label">Estadísticas</span></a
+            >
+          </li>
+          <li>
+            <a th:href="@{/pedidos}" data-title="Pedidos"
+              ><svg width="20" height="20"><use href="#i-box" /></svg
+              ><span class="pill-side-label">Pedidos</span></a
+            >
+          </li>
+          <li>
+            <a th:href="@{/usuarios}" data-title="Usuarios"
+              ><svg width="20" height="20"><use href="#i-users" /></svg
+              ><span class="pill-side-label">Usuarios</span></a
+            >
+          </li>
+          <li>
+            <a th:href="@{/soporte}" data-title="Soporte y Tickets"
+              ><svg width="20" height="20"><use href="#i-support" /></svg
+              ><span class="pill-side-label">Soporte y Tickets</span></a
+            >
+          </li>
+          <li>
+            <a th:href="@{/notificaciones}" data-title="Notificaciones"
+              ><svg width="20" height="20"><use href="#i-bell" /></svg
+              ><span class="pill-side-label">Notificaciones</span
+              ><span class="pill-side-badge">3</span></a
+            >
+          </li>
+        </ul>
+
+        <div class="pill-side-user">
+          <span class="pill-side-avatar" aria-hidden="true">AS</span>
+          <div class="pill-side-user-info">
+            <span class="pill-side-user-name">Admin Shizen</span>
+            <span class="pill-side-user-sub">Operación Bogotá</span>
+          </div>
+          <button
+            onclick="handleLogout()"
+            class="pill-side-logout"
+            title="Cerrar sesión"
+            aria-label="Cerrar sesión"
+          >
+            <svg width="18" height="18"><use href="#i-logout" /></svg>
+          </button>
+        </div>
+      </nav>
+
+      <main class="view-section active">
+        <div class="report-shell">
+          <div class="report-toolbar">
+            <button
+              type="button"
+              class="btn-back"
+              onclick="
+                if (history.length > 1) {
+                  history.back();
+                } else {
+                  window.location.href = '/estadisticas';
+                }
+              "
+            >
+              <i
+                data-lucide="chevron-left"
+                style="width: 15px; height: 15px"
+              ></i>
+              Volver
+            </button>
+            <button
+              type="button"
+              class="exp"
+              id="download-report"
+              th:disabled="${!reporteGenerado}"
+              th:title="${reporteGenerado ? 'Descargar el reporte en PDF' : 'Genera un reporte para poder descargarlo'}"
+            >
+              <i data-lucide="download"></i>
+              Descargar PDF
+            </button>
+          </div>
+
+          <!-- Formulario multifiltro con plantillas rápidas y acordeones -->
+          <form
+            class="filter-card"
+            id="report-filter-form"
+            method="get"
+            th:action="@{/reportes/auditoria}"
+          >
+            <input type="hidden" name="aplicado" value="1" />
+            <input
+              type="hidden"
+              id="f-plantilla"
+              name="plantilla"
+              th:value="${fPlantilla != null ? fPlantilla : 'consolidado'}"
+            />
+
+            <div class="presets-bar">
+              <p class="sub">
+                <i
+                  data-lucide="sparkles"
+                  style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px"
+                ></i
+                >Plantilla / Tipo de informe
+              </p>
+              <div class="presets-list">
+                <button
+                  type="button"
+                  class="preset-pill"
+                  data-preset="consolidado"
+                  th:classappend="${fPlantilla == null or fPlantilla == 'consolidado'} ? ' active'"
+                >
+                  <i data-lucide="layout-dashboard"></i>Consolidado General
+                </button>
+                <button
+                  type="button"
+                  class="preset-pill"
+                  data-preset="financiero"
+                  th:classappend="${fPlantilla == 'financiero'} ? ' active'"
+                >
+                  <i data-lucide="circle-dollar-sign"></i>Cierre Financiero y Recaudo
+                </button>
+                <button
+                  type="button"
+                  class="preset-pill"
+                  data-preset="operacion"
+                  th:classappend="${fPlantilla == 'operacion'} ? ' active'"
+                >
+                  <i data-lucide="activity"></i>Operación y Horas Pico
+                </button>
+                <button
+                  type="button"
+                  class="preset-pill"
+                  data-preset="crecimiento"
+                  th:classappend="${fPlantilla == 'crecimiento'} ? ' active'"
+                >
+                  <i data-lucide="user-plus"></i>Crecimiento y Retención
+                </button>
+                <button
+                  type="button"
+                  class="preset-pill"
+                  data-preset="comercial"
+                  th:classappend="${fPlantilla == 'comercial'} ? ' active'"
+                >
+                  <i data-lucide="tag"></i>Rendimiento Comercial
+                </button>
+                <button
+                  type="button"
+                  class="preset-pill"
+                  data-preset="personalizado"
+                  th:classappend="${fPlantilla == 'personalizado'} ? ' active'"
+                >
+                  <i data-lucide="sliders-horizontal"></i>Personalizado
+                </button>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div>
+                <label class="lbl" for="d1"
+                  ><i data-lucide="calendar"></i>Fecha de inicio
+                  <span class="req">*</span></label
+                >
+                <input
+                  type="date"
+                  id="d1"
+                  name="fechaDesde"
+                  th:value="${fDesde}"
+                  required
+                />
+              </div>
+              <div>
+                <label class="lbl" for="d2"
+                  ><i data-lucide="calendar-check"></i>Fecha de fin
+                  <span class="req">*</span></label
+                >
+                <input
+                  type="date"
+                  id="d2"
+                  name="fechaHasta"
+                  th:value="${fHasta}"
+                  required
+                />
+              </div>
+              <div>
+                <label class="lbl" for="gr"
+                  ><i data-lucide="calendar-range"></i>Agrupación temporal
+                  <span class="req">*</span></label
+                >
+                <select id="gr" name="agrupacion" required>
+                  <option
+                    value="Por hora"
+                    th:selected="${fAgrupacion == 'Por hora'}"
+                  >
+                    Por hora
+                  </option>
+                  <option
+                    value="Diaria"
+                    th:selected="${fAgrupacion == 'Diaria'}"
+                  >
+                    Diaria
+                  </option>
+                  <option
+                    value="Semanal"
+                    th:selected="${fAgrupacion == null or fAgrupacion == 'Semanal'}"
+                  >
+                    Semanal
+                  </option>
+                  <option
+                    value="Mensual"
+                    th:selected="${fAgrupacion == 'Mensual'}"
+                  >
+                    Mensual
+                  </option>
+                  <option
+                    value="Trimestral"
+                    th:selected="${fAgrupacion == 'Trimestral'}"
+                  >
+                    Trimestral
+                  </option>
+                  <option
+                    value="Semestral"
+                    th:selected="${fAgrupacion == 'Semestral'}"
+                  >
+                    Semestral
+                  </option>
+                  <option value="Anual" th:selected="${fAgrupacion == 'Anual'}">
+                    Anual
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="acc" id="secs">
+              <div class="ah">
+                <button type="button" class="at" aria-expanded="false">
+                  <i data-lucide="chevron-down"></i>
+                  <i class="ti" data-lucide="layout-list"></i>
+                  Secciones a incluir:<span class="cnt">3 de 3</span>
+                </button>
+                <span class="sp"></span>
+                <button type="button" class="mini" data-a="all">Todas</button>
+                <button type="button" class="mini" data-a="clr">
+                  <i data-lucide="eraser"></i>Limpiar
+                </button>
+              </div>
+              <div class="body">
+                <div class="inner">
+                  <p class="sub">Filtros</p>
+                  <div class="fil">
+                    <div>
+                      <label class="lbl" for="f1"
+                        ><i data-lucide="users"></i>Tipo de rol</label
+                      >
+                      <select id="f1" name="rol">
+                        <option
+                          value=""
+                          th:selected="${fRol == null or fRol == ''}"
+                        >
+                          No aplica
+                        </option>
+                        <option
+                          value="Cliente"
+                          th:selected="${fRol == 'Cliente'}"
+                        >
+                          Cliente
+                        </option>
+                        <option
+                          value="Negocio"
+                          th:selected="${fRol == 'Negocio'}"
+                        >
+                          Negocio
+                        </option>
+                        <option
+                          value="Repartidor"
+                          th:selected="${fRol == 'Repartidor'}"
+                        >
+                          Repartidor
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="lbl" for="f2"
+                        ><i data-lucide="package"></i>Estado del pedido</label
+                      >
+                      <select id="f2" name="estado">
+                        <option
+                          value=""
+                          th:selected="${fEstado == null or fEstado == ''}"
+                        >
+                          No aplica
+                        </option>
+                        <option
+                          value="Pendiente"
+                          th:selected="${fEstado == 'Pendiente'}"
+                        >
+                          Pendiente
+                        </option>
+                        <option
+                          value="Asignado"
+                          th:selected="${fEstado == 'Asignado'}"
+                        >
+                          Asignado
+                        </option>
+                        <option
+                          value="En camino"
+                          th:selected="${fEstado == 'En camino'}"
+                        >
+                          En camino
+                        </option>
+                        <option
+                          value="Entregado"
+                          th:selected="${fEstado == 'Entregado'}"
+                        >
+                          Entregado
+                        </option>
+                        <option
+                          value="Recogido en negocio"
+                          th:selected="${fEstado == 'Recogido en negocio'}"
+                        >
+                          Recogido en negocio
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="lbl" for="f3"
+                        ><i data-lucide="wallet"></i>Fuente de ganancia</label
+                      >
+                      <select id="f3" name="fuenteGanancia">
+                        <option
+                          value=""
+                          th:selected="${fFuente == null or fFuente == ''}"
+                        >
+                          No aplica
+                        </option>
+                        <option
+                          value="Comisión"
+                          th:selected="${fFuente == 'Comisión'}"
+                        >
+                          Comisión
+                        </option>
+                        <option
+                          value="Envío"
+                          th:selected="${fFuente == 'Envío'}"
+                        >
+                          Envío
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="lbl" for="f4"
+                        ><i data-lucide="credit-card"></i>Método de pago</label
+                      >
+                      <select id="f4" name="metodoPago">
+                        <option
+                          value=""
+                          th:selected="${fMetodoPago == null or fMetodoPago == ''}"
+                        >
+                          No aplica
+                        </option>
+                        <option
+                          th:each="mp : ${metodosPagoLista}"
+                          th:value="${mp}"
+                          th:text="${mp}"
+                          th:selected="${fMetodoPago == mp}"
+                        >
+                          Método
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="lbl" for="f5"
+                        ><i data-lucide="tag"></i>Categoría consumida</label
+                      >
+                      <select id="f5" name="categoria">
+                        <option
+                          value=""
+                          th:selected="${fCategoria == null or fCategoria == ''}"
+                        >
+                          No aplica
+                        </option>
+                        <option
+                          th:each="cat : ${categoriasLista}"
+                          th:value="${cat}"
+                          th:text="${cat}"
+                          th:selected="${fCategoria == cat}"
+                        >
+                          Categoría
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="lbl" for="f6"
+                        ><i data-lucide="map-pin"></i>Zona / Sector</label
+                      >
+                      <select id="f6" name="zona">
+                        <option
+                          value=""
+                          th:selected="${fZona == null or fZona == ''}"
+                        >
+                          No aplica
+                        </option>
+                        <option
+                          th:each="z : ${zonasLista}"
+                          th:value="${z}"
+                          th:text="${z}"
+                          th:selected="${fZona == z}"
+                        >
+                          Zona
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <p class="sub">Secciones</p>
+                  <div class="chips">
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="secciones"
+                        value="picos"
+                        th:checked="${incPicos}"
+                      /><i data-lucide="activity"></i>Picos de demanda</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="secciones"
+                        value="usuarios"
+                        th:checked="${incUsuarios}"
+                      /><i data-lucide="user-plus"></i>Usuarios
+                      registrados</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="secciones"
+                        value="ganancias"
+                        th:checked="${incGanancias}"
+                      /><i data-lucide="circle-dollar-sign"></i>Ganancias
+                      netas</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc" id="gfx">
+              <div class="ah">
+                <button type="button" class="at" aria-expanded="false">
+                  <i data-lucide="chevron-down"></i>
+                  <i class="ti" data-lucide="line-chart"></i>
+                  Gráficas a incluir:<span class="cnt">10 de 10</span>
+                </button>
+                <span class="sp"></span>
+                <button type="button" class="mini" data-a="all">Todas</button>
+                <button type="button" class="mini" data-a="clr">
+                  <i data-lucide="eraser"></i>Limpiar
+                </button>
+              </div>
+              <div class="body">
+                <div class="inner">
+                  <div class="chips">
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="pedidos"
+                        th:checked="${grafPedidos}"
+                      /><i data-lucide="activity"></i>Picos de demanda</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="ganancias"
+                        th:checked="${grafGanancias}"
+                      /><i data-lucide="circle-dollar-sign"></i>Ganancias
+                      netas</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="ventas"
+                        th:checked="${grafVentas}"
+                      /><i data-lucide="banknote"></i>Ingresos / Ventas</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="compras"
+                        th:checked="${grafCompras}"
+                      /><i data-lucide="shopping-bag"></i>Compras
+                      completadas</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="ticket"
+                        th:checked="${grafTicket}"
+                      /><i data-lucide="receipt"></i>Ticket promedio</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="usuariosNuevos"
+                        th:checked="${grafUsuariosNuevos}"
+                      /><i data-lucide="user-plus"></i>Usuarios
+                      registrados</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="usuariosActivos"
+                        th:checked="${grafUsuariosActivos}"
+                      /><i data-lucide="user-check"></i>Usuarios activos</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="metodosPago"
+                        th:checked="${grafMetodosPago}"
+                      /><i data-lucide="credit-card"></i>Métodos de pago</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="categorias"
+                        th:checked="${grafCategorias}"
+                      /><i data-lucide="tag"></i>Categorías más compradas</label
+                    >
+                    <label class="chip"
+                      ><input
+                        type="checkbox"
+                        name="graficas"
+                        value="estados"
+                        th:checked="${grafEstados}"
+                      /><i data-lucide="list-checks"></i>Pedidos por
+                      estado</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="foot">
+              <a th:href="@{/reportes/auditoria}" class="btn"
+                ><i data-lucide="eraser"></i>Limpiar todo</a
+              >
+              <button type="submit" class="btn pri">
+                <i data-lucide="trending-up"></i>Generar reporte
+              </button>
+            </div>
+          </form>
+
+          <section class="page">
+            <img id="marca" th:src="@{/assets/images/logo_negro.png}" alt="" />
+            <header class="report-header">
+              <img
+                th:src="@{/assets/images/logo_negro.png}"
+                alt="Shizen Food"
+              />
+              <div class="meta">
+                <h1 th:text="${tituloInforme}">Consolidado General (Ejecutivo)</h1>
+                <p
+                  th:text="'N.º ' + ${reporte.codigoAuditoria} + ' · Consolidado anónimo'"
+                >
+                  N.º REP
+                </p>
+                <p th:text="'Fecha de emisión: ' + ${reporte.fechaGeneracion}">
+                  Fecha
+                </p>
+                <p>Bogotá, D.C., Colombia</p>
+              </div>
+            </header>
+
+            <section class="info">
+              <div>
+                <label>Rango de fechas</label>
+                <div th:text="${reporte.periodoTexto}">Período</div>
+              </div>
+              <div>
+                <label>Agrupación temporal</label>
+                <div th:text="${reporte.agrupacionTexto}">Semanal</div>
+              </div>
+              <div>
+                <label>Tipo de reporte</label>
+                <div th:text="${reporte.alcanceTexto}">Consolidado general</div>
+              </div>
+            </section>
+
+            <section class="kpis">
+              <div class="kpi" th:if="${incPicos}">
+                <small>Pedidos totales</small>
+                <b
+                  th:text="${#numbers.formatInteger(reporte.pedidosTotales, 1, 'POINT')}"
+                  >0</b
+                >
+                <span
+                  class="kpi-sub"
+                  th:text="'Pico: ' + ${reporte.picoDemandaEtiqueta} + ' (' + ${reporte.picoDemandaPedidos} + ')'"
+                  >Pico</span
+                >
+              </div>
+              <div class="kpi" th:if="${incGanancias}">
+                <small>Ganancias netas</small>
+                <b
+                  th:text="'$ ' + ${#numbers.formatInteger(reporte.gananciasNetas, 1, 'POINT')}"
+                  >$ 0</b
+                >
+                <span
+                  class="kpi-sub"
+                  th:text="'Sobre ventas de $ ' + ${#numbers.formatInteger(reporte.ventasTotales, 1, 'POINT')}"
+                  >Ventas</span
+                >
+              </div>
+              <div class="kpi" th:if="${incUsuarios}">
+                <small>Usuarios registrados</small>
+                <b
+                  th:text="${#numbers.formatInteger(reporte.usuariosRegistrados, 1, 'POINT')}"
+                  >0</b
+                >
+                <span
+                  class="kpi-sub"
+                  th:text="${reporte.usuariosConsumidores} + ' cli. · ' + ${reporte.usuariosNegocios} + ' neg. · ' + ${reporte.usuariosRepartidores} + ' rep.'"
+                  >Roles</span
+                >
+              </div>
+              <div class="kpi">
+                <small>Método de pago más usado</small>
+                <b th:text="${reporte.metodoPagoMasUsado}">Nequi</b>
+                <span
+                  class="kpi-sub"
+                  th:text="${reporte.metodoPagoMasUsadoCantidad} + ' operaciones (' + ${reporte.metodoPagoMasUsadoPct} + '%)'"
+                  >0%</span
+                >
+              </div>
+              <div class="kpi" th:if="${incPicos}">
+                <small>Pedidos completados / en curso</small>
+                <b
+                  th:text="${reporte.pedidosCompletados} + ' / ' + ${reporte.pedidosEnCurso}"
+                  >0 / 0</b
+                >
+                <span
+                  class="kpi-sub"
+                  th:text="'Cancelados: ' + ${reporte.pedidosCancelados}"
+                  >Cancelados: 0</span
+                >
+              </div>
+              <div class="kpi" th:if="${incGanancias}">
+                <small>Ventas brutas completadas</small>
+                <b
+                  th:text="'$ ' + ${#numbers.formatInteger(reporte.ventasTotales, 1, 'POINT')}"
+                  >$ 0</b
+                >
+                <span
+                  class="kpi-sub"
+                  th:text="'Agrupación: ' + ${reporte.agrupacionTexto}"
+                  >Semanal</span
+                >
+              </div>
+            </section>
+
+            <section
+              class="graficas"
+              th:if="${grafPedidos or grafGanancias or grafVentas or grafCompras or grafTicket or grafUsuariosNuevos or grafUsuariosActivos or grafMetodosPago or grafCategorias or grafEstados}"
+            >
+              <div class="grafica" th:if="${grafPedidos}">
+                <small
+                  th:text="'Picos de demanda (' + ${reporte.agrupacionTexto} + ')'"
+                  >Picos de demanda</small
+                >
+                <div class="lienzo" id="grafica-pedidos"></div>
+              </div>
+              <div class="grafica" th:if="${grafGanancias}">
+                <small
+                  th:text="'Ganancias netas (' + ${reporte.agrupacionTexto} + ')'"
+                  >Ganancias netas</small
+                >
+                <div class="lienzo" id="grafica-ganancias"></div>
+              </div>
+              <div class="grafica" th:if="${grafVentas}">
+                <small
+                  th:text="'Ingresos / Ventas (' + ${reporte.agrupacionTexto} + ')'"
+                  >Ingresos / Ventas</small
+                >
+                <div class="lienzo" id="grafica-ventas"></div>
+              </div>
+              <div class="grafica" th:if="${grafCompras}">
+                <small
+                  th:text="'Compras completadas (' + ${reporte.agrupacionTexto} + ')'"
+                  >Compras completadas</small
+                >
+                <div class="lienzo" id="grafica-compras"></div>
+              </div>
+              <div class="grafica" th:if="${grafTicket}">
+                <small
+                  th:text="'Ticket promedio (' + ${reporte.agrupacionTexto} + ')'"
+                  >Ticket promedio</small
+                >
+                <div class="lienzo" id="grafica-ticket"></div>
+              </div>
+              <div class="grafica" th:if="${grafUsuariosNuevos}">
+                <small
+                  th:text="'Usuarios registrados (' + ${reporte.agrupacionTexto} + ')'"
+                  >Usuarios registrados</small
+                >
+                <div class="lienzo" id="grafica-usuarios-nuevos"></div>
+              </div>
+              <div class="grafica" th:if="${grafUsuariosActivos}">
+                <small
+                  th:text="'Usuarios activos (' + ${reporte.agrupacionTexto} + ')'"
+                  >Usuarios activos</small
+                >
+                <div class="lienzo" id="grafica-usuarios-activos"></div>
+              </div>
+              <div class="grafica" th:if="${grafMetodosPago}">
+                <small>Métodos de pago (transacciones)</small>
+                <div class="lienzo" id="grafica-metodos-pago"></div>
+              </div>
+              <div class="grafica" th:if="${grafCategorias}">
+                <small>Categorías más compradas (unidades)</small>
+                <div class="lienzo" id="grafica-categorias"></div>
+              </div>
+              <div class="grafica" th:if="${grafEstados}">
+                <small>Pedidos por estado</small>
+                <div class="lienzo" id="grafica-estados"></div>
+              </div>
+            </section>
+
+            <h2>Métodos de pago utilizados</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Método de pago</th>
+                  <th class="r">Transacciones</th>
+                  <th class="r">Participación</th>
+                  <th class="r">Monto total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="mp, stat : ${reporte.metodosPago}">
+                  <td>
+                    <span th:text="${mp.metodo}">Método</span>
+                    <span class="badge-top" th:if="${stat.index == 0}"
+                      >Más usado</span
+                    >
+                  </td>
+                  <td
+                    class="r"
+                    th:text="${#numbers.formatInteger(mp.cantidad, 1, 'POINT')}"
+                  >
+                    0
+                  </td>
+                  <td class="r" th:text="${mp.porcentaje} + '%'">0%</td>
+                  <td
+                    class="r"
+                    th:text="'$ ' + ${#numbers.formatInteger(mp.total, 1, 'POINT')}"
+                  >
+                    $ 0
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(reporte.metodosPago)}">
+                  <td colspan="4" style="text-align: center; color: #888">
+                    Sin pagos registrados para los filtros seleccionados
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div th:if="${incGanancias}">
+              <h2>Desglose de ganancias netas por fuente</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fuente de ganancia</th>
+                    <th class="r">Participación</th>
+                    <th class="r">Monto estimado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="fg : ${reporte.fuentesGanancia}">
+                    <td th:text="${fg.fuente}">Fuente</td>
+                    <td class="r" th:text="${fg.porcentaje} + '%'">0%</td>
+                    <td
+                      class="r"
+                      th:text="'$ ' + ${#numbers.formatInteger(fg.monto, 1, 'POINT')}"
+                    >
+                      $ 0
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2">Total ganancias netas</td>
+                    <td
+                      class="r"
+                      th:text="'$ ' + ${#numbers.formatInteger(reporte.gananciasNetas, 1, 'POINT')}"
+                    >
+                      $ 0
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div th:if="${incUsuarios}">
+              <h2>Usuarios registrados por rol (consolidado anónimo)</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rol</th>
+                    <th class="r">Cantidad registrada</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Clientes</td>
+                    <td
+                      class="r"
+                      th:text="${#numbers.formatInteger(reporte.usuariosConsumidores, 1, 'POINT')}"
+                    >
+                      0
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Negocios</td>
+                    <td
+                      class="r"
+                      th:text="${#numbers.formatInteger(reporte.usuariosNegocios, 1, 'POINT')}"
+                    >
+                      0
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Repartidores</td>
+                    <td
+                      class="r"
+                      th:text="${#numbers.formatInteger(reporte.usuariosRepartidores, 1, 'POINT')}"
+                    >
+                      0
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Total registrados en el rango</td>
+                    <td
+                      class="r"
+                      th:text="${#numbers.formatInteger(reporte.usuariosRegistrados, 1, 'POINT')}"
+                    >
+                      0
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <h2>Pedidos por estado</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Estado</th>
+                  <th class="r">Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="item : ${reporte.pedidosPorEstado}">
+                  <td th:text="${item.estado}">Estado</td>
+                  <td
+                    class="r"
+                    th:text="${#numbers.formatInteger(item.cantidad, 1, 'POINT')}"
+                  >
+                    0
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(reporte.pedidosPorEstado)}">
+                  <td colspan="2" style="text-align: center; color: #888">
+                    Sin registros para los filtros seleccionados
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <footer>
+              <span
+                >Shizen Food · Reporte Administrativo Consolidado y
+                Anónimo</span
+              >
+              <span th:text="'Generado el ' + ${reporte.fechaGeneracion}"
+                >Generado</span
+              >
+            </footer>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+    <script th:src="@{/js/sidebar-pill.js}"></script>
+    <script>
+      const downloadReportButton = document.getElementById("download-report");
+
+      downloadReportButton.addEventListener("click", async () => {
+        if (downloadReportButton.disabled) return;
+
+        const report = document.querySelector(".page");
+        if (!report || typeof window.html2pdf !== "function") {
+          console.error("No se pudo preparar la descarga del reporte PDF.");
+          alert("No se pudo descargar el reporte PDF. Inténtalo de nuevo.");
+          return;
+        }
+
+        downloadReportButton.disabled = true;
+        try {
+          // Descarga el PDF directamente, sin abrir el diálogo de impresión.
+          await window
+            .html2pdf()
+            .set({
+              margin: 8,
+              filename: "shizen-reporte.pdf",
+              image: { type: "jpeg", quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true },
+              jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+            })
+            .from(report)
+            .save();
+        } catch (error) {
+          console.error("Error al descargar el reporte PDF:", error);
+          alert("No se pudo descargar el reporte PDF. Inténtalo de nuevo.");
+        } finally {
+          downloadReportButton.disabled = false;
+        }
+      });
+    </script>
+    <script th:inline="javascript">
+      const serieTemporal = /*[[${reporte.serieTemporal}]]*/ [];
+      const metodosPagoData = /*[[${reporte.metodosPago}]]*/ [];
+      const categoriasData = /*[[${reporte.categoriasMasCompradas}]]*/ [];
+      const estadosData = /*[[${reporte.pedidosPorEstado}]]*/ [];
+
+      const PLANTILLAS = {
+        consolidado: {
+          agrupacion: "Semanal",
+          filtros: { f1: "", f2: "", f3: "", f4: "", f5: "", f6: "" },
+          secciones: ["picos", "usuarios", "ganancias"],
+          graficas: ["pedidos", "ganancias", "ventas", "usuariosActivos"],
+        },
+        financiero: {
+          agrupacion: "Semanal",
+          filtros: { f1: "", f2: "Entregado", f3: "", f4: "", f5: "", f6: "" },
+          secciones: ["ganancias"],
+          graficas: ["ganancias", "ventas", "ticket", "metodosPago"],
+        },
+        operacion: {
+          agrupacion: "Por hora",
+          filtros: { f1: "", f2: "", f3: "", f4: "", f5: "", f6: "" },
+          secciones: ["picos"],
+          graficas: ["pedidos", "estados", "compras"],
+        },
+        crecimiento: {
+          agrupacion: "Semanal",
+          filtros: { f1: "", f2: "", f3: "", f4: "", f5: "", f6: "" },
+          secciones: ["usuarios"],
+          graficas: ["usuariosNuevos", "usuariosActivos", "ticket"],
+        },
+        comercial: {
+          agrupacion: "Semanal",
+          filtros: { f1: "", f2: "Entregado", f3: "", f4: "", f5: "", f6: "" },
+          secciones: ["ganancias", "picos"],
+          graficas: ["categorias", "ticket", "metodosPago"],
+        },
+      };
+
+      function marcarPlantillaActiva(clave) {
+        document.getElementById("f-plantilla").value = clave;
+        document.querySelectorAll(".preset-pill").forEach((b) => {
+          b.classList.toggle("active", b.dataset.preset === clave);
+        });
+      }
+
+      function aplicarPlantilla(clave) {
+        const cfg = PLANTILLAS[clave];
+        if (!cfg) {
+          marcarPlantillaActiva("personalizado");
+          return;
+        }
+        document.getElementById("gr").value = cfg.agrupacion;
+        Object.entries(cfg.filtros).forEach(([id, val]) => {
+          const el = document.getElementById(id);
+          if (el) el.value = val;
+        });
+        document
+          .querySelectorAll('input[name="secciones"]')
+          .forEach((cb) => {
+            cb.checked = cfg.secciones.includes(cb.value);
+          });
+        document
+          .querySelectorAll('input[name="graficas"]')
+          .forEach((cb) => {
+            cb.checked = cfg.graficas.includes(cb.value);
+          });
+        document.querySelectorAll(".filter-card .acc").forEach((acc) => {
+          const list = [...acc.querySelectorAll("input[type=checkbox]")];
+          const cnt = acc.querySelector(".cnt");
+          if (cnt)
+            cnt.textContent =
+              list.filter((b) => b.checked).length + " de " + list.length;
+        });
+        marcarPlantillaActiva(clave);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.lucide) lucide.createIcons();
+
+        document.querySelectorAll(".preset-pill").forEach((btn) => {
+          btn.addEventListener("click", () =>
+            aplicarPlantilla(btn.dataset.preset),
+          );
+        });
+
+        // Cambiar cualquier filtro o agrupación manualmente activa Personalizado
+        document
+          .querySelectorAll("#gr, #f1, #f2, #f3, #f4, #f5, #f6")
+          .forEach((el) => {
+            el.addEventListener("change", () =>
+              marcarPlantillaActiva("personalizado"),
+            );
+          });
+
+        document.querySelectorAll(".filter-card .acc").forEach((acc) => {
+          const boxes = () => [...acc.querySelectorAll("input[type=checkbox]")];
+          const upd = () => {
+            const list = boxes();
+            const cnt = acc.querySelector(".cnt");
+            if (cnt)
+              cnt.textContent =
+                list.filter((b) => b.checked).length + " de " + list.length;
+          };
+          acc.querySelector(".at").onclick = (e) => {
+            const b = e.currentTarget;
+            const open = b.getAttribute("aria-expanded") !== "true";
+            b.setAttribute("aria-expanded", open);
+            acc.classList.toggle("open", open);
+          };
+          acc.querySelector("[data-a=all]").onclick = () => {
+            boxes().forEach((b) => {
+              b.checked = true;
+            });
+            upd();
+            marcarPlantillaActiva("personalizado");
+          };
+          acc.querySelector("[data-a=clr]").onclick = () => {
+            boxes().forEach((b) => {
+              b.checked = false;
+            });
+            upd();
+            marcarPlantillaActiva("personalizado");
+          };
+          boxes().forEach((b) => {
+            b.onchange = () => {
+              upd();
+              marcarPlantillaActiva("personalizado");
+            };
+          });
+          upd();
+        });
+      });
+
+      function formatChartVal(v, isMoney) {
+        if (!isMoney) return String(v);
+        if (v >= 1000000)
+          return "$" + (v / 1000000).toFixed(1).replace(".0", "") + "M";
+        if (v >= 1000) return "$" + Math.round(v / 1000) + "k";
+        return "$" + v;
+      }
+
+      // Genera las 5 líneas guía horizontales compartidas entre gráficas de barras y de líneas
+      function buildSvgGrid(padL, padT, w, padR, ch, maxV, isMoney) {
+        return [0, 1, 2, 3, 4]
+          .map((idx) => {
+            const val = (maxV * (4 - idx)) / 4;
+            const y = padT + (ch * idx) / 4;
+            const lbl = isMoney
+              ? formatChartVal(Math.round(val), true)
+              : String(Math.round(val));
+            return `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${w - padR}" y2="${y.toFixed(1)}" stroke="#e5e9e0" stroke-dasharray="3 3"/>
+              <text x="${padL - 5}" y="${(y + 3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="#6b7280">${lbl}</text>`;
+          })
+          .join("");
+      }
+
+      function renderBarChart(
+        containerId,
+        items,
+        labelKey,
+        valKey,
+        color,
+        isMoney,
+        showAllXLabels,
+      ) {
+        const el = document.getElementById(containerId);
+        if (!el || !items || items.length === 0) return;
+
+        const w = 480,
+          h = 170,
+          padL = 46,
+          padB = 22,
+          padT = 16,
+          padR = 14;
+        const cw = w - padL - padR,
+          ch = h - padT - padB;
+        const vals = items.map((d) => Number(d[valKey]) || 0);
+        const maxV = Math.max(...vals, 1);
+
+        const n = vals.length;
+        const step = cw / Math.max(n, 1);
+        const barW = Math.max(9, Math.min(28, step * 0.72));
+        const fontSize = Math.min(9.5, Math.max(6.5, barW * 0.65)).toFixed(1);
+        const grid = buildSvgGrid(padL, padT, w, padR, ch, maxV, isMoney);
+
+        const bars = [];
+        const etiquetasFijas = [];
+        const xLabels = [];
+
+        items.forEach((d, i) => {
+          const v = Number(d[valKey]) || 0;
+          const bh = v > 0 ? Math.max(3, (v / maxV) * ch) : 1;
+          const x = padL + i * step + (step - barW) / 2;
+          const y = padT + ch - bh;
+          bars.push(
+            `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" fill="${color}" rx="2"></rect>`,
+          );
+
+          // Etiqueta fija dentro de la barra (o encima si la barra es muy baja) para que salga en el PDF
+          if (v > 0) {
+            const txt = formatChartVal(v, isMoney);
+            const cx = (x + barW / 2).toFixed(1);
+            const inside = bh >= 28;
+            const cy = (inside ? y + bh / 2 : y - 3).toFixed(1);
+            const anchor = inside ? "middle" : "start";
+            const fill = inside ? "#ffffff" : "#17231A";
+            etiquetasFijas.push(
+              `<text x="${cx}" y="${cy}" text-anchor="${anchor}" dominant-baseline="central" transform="rotate(-90 ${cx} ${cy})" font-size="${fontSize}" font-weight="700" fill="${fill}">${txt}</text>`,
+            );
+          }
+
+          if (showAllXLabels) {
+            const lbl = String(d[labelKey] || "").slice(0, 12);
+            xLabels.push(
+              `<text x="${(x + barW / 2).toFixed(1)}" y="${h - 5}" text-anchor="middle" font-size="8" fill="#6b7280">${lbl}</text>`,
+            );
+          }
+        });
+
+        const xAxisText = showAllXLabels
+          ? xLabels.join("")
+          : `<text x="${padL}" y="${h - 5}" font-size="8.5" fill="#6b7280">${items[0][labelKey]}</text>
+         <text x="${w - padR}" y="${h - 5}" text-anchor="end" font-size="8.5" fill="#6b7280">${items[items.length - 1][labelKey]}</text>`;
+
+        el.innerHTML = `
+      <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:100%;overflow:visible">
+        ${grid}
+        ${xAxisText}
+        ${bars.join("")}
+        ${etiquetasFijas.join("")}
+      </svg>`;
+      }
+
+      function renderLineChart(
+        containerId,
+        items,
+        labelKey,
+        valKey,
+        color,
+        isMoney,
+      ) {
+        const el = document.getElementById(containerId);
+        if (!el || !items || items.length === 0) return;
+
+        const w = 480,
+          h = 170,
+          padL = 46,
+          padB = 22,
+          padT = 22,
+          padR = 16;
+        const cw = w - padL - padR,
+          ch = h - padT - padB;
+        const vals = items.map((d) => Number(d[valKey]) || 0);
+        const maxV = Math.max(...vals, 1);
+
+        const n = items.length;
+        const step = n > 1 ? cw / (n - 1) : 0;
+        const grid = buildSvgGrid(padL, padT, w, padR, ch, maxV, isMoney);
+
+        const puntos = items.map((d, i) => {
+          const v = Number(d[valKey]) || 0;
+          const x = n > 1 ? padL + i * step : padL + cw / 2;
+          const y = padT + ch - (v / maxV) * ch;
+          return { x, y, v };
+        });
+
+        const polyline = puntos
+          .map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`)
+          .join(" ");
+        const dotsAndLabels = puntos
+          .map((p, i) => {
+            let lblSvg = "";
+            if (p.v > 0) {
+              const txt = formatChartVal(p.v, isMoney);
+              const cx = p.x.toFixed(1);
+              const cy = (p.y - 7).toFixed(1);
+              if (n > 10) {
+                lblSvg = `<text x="${cx}" y="${cy}" text-anchor="start" dominant-baseline="central" transform="rotate(-90 ${cx} ${cy})" font-size="7.5" font-weight="700" fill="#17231A">${txt}</text>`;
+              } else {
+                lblSvg = `<text x="${cx}" y="${cy}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#17231A">${txt}</text>`;
+              }
+            }
+            return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="${color}" stroke="#fff" stroke-width="1"></circle>${lblSvg}`;
+          })
+          .join("");
+
+        el.innerHTML = `
+      <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:100%;overflow:visible">
+        ${grid}
+        <polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        ${dotsAndLabels}
+        <text x="${padL}" y="${h - 5}" font-size="8.5" fill="#6b7280">${items[0][labelKey]}</text>
+        <text x="${w - padR}" y="${h - 5}" text-anchor="end" font-size="8.5" fill="#6b7280">${items[items.length - 1][labelKey]}</text>
+      </svg>`;
+      }
+
+      function renderDonutChart(containerId, items, labelKey, valKey) {
+        const el = document.getElementById(containerId);
+        if (!el || !items || items.length === 0) return;
+
+        const total = items.reduce((s, d) => s + (Number(d[valKey]) || 0), 0);
+        if (total === 0) return;
+
+        const palette = [
+          "#9b51e0",
+          "#ff6b81",
+          "#ffd93d",
+          "#4cc9f0",
+          "#2c5b27",
+          "#f47b20",
+          "#adb5bd",
+        ];
+        const size = 140,
+          cx = 70,
+          cy = 70,
+          rOut = 60,
+          rIn = 28;
+        let ang = -Math.PI / 2;
+
+        const slices = items
+          .map((d, idx) => {
+            const v = Number(d[valKey]) || 0;
+            const frac = v / total;
+            const a1 = ang;
+            const a2 = ang + frac * Math.PI * 2;
+            ang = a2;
+            const large = a2 - a1 > Math.PI ? 1 : 0;
+            const x1o = cx + rOut * Math.cos(a1),
+              y1o = cy + rOut * Math.sin(a1);
+            const x2o = cx + rOut * Math.cos(a2),
+              y2o = cy + rOut * Math.sin(a2);
+            const x1i = cx + rIn * Math.cos(a2),
+              y1i = cy + rIn * Math.sin(a2);
+            const x2i = cx + rIn * Math.cos(a1),
+              y2i = cy + rIn * Math.sin(a1);
+            const path =
+              frac >= 0.999
+                ? `M ${cx} ${cy - rOut} A ${rOut} ${rOut} 0 1 1 ${cx - 0.01} ${cy - rOut} Z M ${cx} ${cy - rIn} A ${rIn} ${rIn} 0 1 0 ${cx - 0.01} ${cy - rIn} Z`
+                : `M ${x1o.toFixed(1)} ${y1o.toFixed(1)} A ${rOut} ${rOut} 0 ${large} 1 ${x2o.toFixed(1)} ${y2o.toFixed(1)} L ${x1i.toFixed(1)} ${y1i.toFixed(1)} A ${rIn} ${rIn} 0 ${large} 0 ${x2i.toFixed(1)} ${y2i.toFixed(1)} Z`;
+            return `<path d="${path}" fill="${palette[idx % palette.length]}" stroke="#fff" stroke-width="1.5"></path>`;
+          })
+          .join("");
+
+        const legend = items
+          .slice(0, 6)
+          .map((d, idx) => {
+            const v = Number(d[valKey]) || 0;
+            const pct = ((v / total) * 100).toFixed(1);
+            return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;line-height:1.35">
+        <span style="display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+          <span style="width:8px;height:8px;border-radius:50%;background:${palette[idx % palette.length]};flex-shrink:0"></span>
+          <span>${d[labelKey]}</span>
+        </span>
+        <strong style="white-space:nowrap">${v} (${pct}%)</strong>
+      </div>`;
+          })
+          .join("");
+
+        el.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;height:100%;padding:2px 4px">
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0">${legend}</div>
+        <svg viewBox="0 0 ${size} ${size}" style="width:128px;height:128px;flex-shrink:0">${slices}</svg>
+      </div>`;
+      }
+
+      renderBarChart(
+        "grafica-pedidos",
+        serieTemporal,
+        "etiqueta",
+        "pedidos",
+        "#82a878",
+        false,
+        false,
+      );
+      renderLineChart(
+        "grafica-ganancias",
+        serieTemporal,
+        "etiqueta",
+        "ganancias",
+        "#c98743",
+        true,
+      );
+      renderLineChart(
+        "grafica-ventas",
+        serieTemporal,
+        "etiqueta",
+        "ventas",
+        "#315f40",
+        true,
+      );
+      renderBarChart(
+        "grafica-compras",
+        serieTemporal,
+        "etiqueta",
+        "compras",
+        "#f47b20",
+        false,
+        false,
+      );
+      renderLineChart(
+        "grafica-ticket",
+        serieTemporal,
+        "etiqueta",
+        "ticket",
+        "#5c6986",
+        true,
+      );
+      renderBarChart(
+        "grafica-usuarios-nuevos",
+        serieTemporal,
+        "etiqueta",
+        "usuariosNuevos",
+        "#2c5b27",
+        false,
+        false,
+      );
+      renderBarChart(
+        "grafica-usuarios-activos",
+        serieTemporal,
+        "etiqueta",
+        "usuariosActivos",
+        "#0284c7",
+        false,
+        false,
+      );
+      renderBarChart(
+        "grafica-metodos-pago",
+        metodosPagoData,
+        "metodo",
+        "cantidad",
+        "#2c5b27",
+        false,
+        true,
+      );
+      renderDonutChart(
+        "grafica-categorias",
+        categoriasData,
+        "categoria",
+        "unidades",
+      );
+      renderBarChart(
+        "grafica-estados",
+        estadosData,
+        "estado",
+        "cantidad",
+        "#5c6986",
+        false,
+        true,
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,331 @@
+/* ======================================================== */
+/* SHIZEN ADMIN - BARRA LATERAL PÍLDORA (TEMA OSCURO INVERTIDO) */
+/* ======================================================== */
+:root {
+  --side-bg: #1e401b;
+  --side-border: rgba(255, 255, 255, 0.12);
+  --side-soft: rgba(255, 255, 255, 0.1);
+  --side-soft-hover: rgba(255, 255, 255, 0.18);
+  --side-text: rgba(255, 255, 255, 0.85);
+  --side-text-muted: rgba(255, 255, 255, 0.6);
+  --side-active-bg: #ffffff;
+  --side-active-text: #1e401b;
+  --side-accent: #f47b20;
+}
+
+.app-container {
+  display: flex !important;
+  min-height: 100vh;
+  background-color: #f3f4ed;
+}
+
+.app-container .view-section {
+  margin-left: 0 !important;
+  flex: 1;
+  min-width: 0;
+  padding: 24px 28px 28px 14px;
+}
+
+.pill-sidebar {
+  flex: none;
+  position: sticky;
+  top: 14px;
+  margin: 14px 10px 14px 14px;
+  height: calc(100vh - 28px);
+  width: 232px;
+  padding: 14px;
+  background: var(--side-bg);
+  border: 1px solid var(--side-border);
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(18, 38, 16, 0.28);
+  transition: width .25s ease;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.pill-sidebar.collapsed {
+  width: 76px;
+}
+
+.pill-side-top {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.pill-side-toggle {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--side-soft);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background .15s, transform .25s ease;
+}
+
+.pill-side-toggle:hover {
+  background: var(--side-soft-hover);
+}
+
+.pill-side-toggle svg {
+  transition: transform .25s ease;
+}
+
+.pill-sidebar.collapsed .pill-side-toggle svg {
+  transform: rotate(180deg);
+}
+
+.pill-side-search {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  background: var(--side-soft);
+  color: var(--side-text-muted);
+  border: 1px solid transparent;
+  transition: border-color .15s, background .15s;
+}
+
+.pill-side-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.pill-side-search input::placeholder {
+  color: var(--side-text-muted);
+}
+
+.pill-side-search:focus-within {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.pill-sidebar.collapsed .pill-side-search {
+  display: none;
+}
+
+.pill-side-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pill-side-nav a {
+  height: 44px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 999px;
+  color: var(--side-text);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+
+.pill-side-nav a:hover {
+  background: var(--side-soft);
+  color: #ffffff;
+}
+
+.pill-side-nav a[aria-current="page"] {
+  background: var(--side-active-bg);
+  color: var(--side-active-text);
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pill-side-nav svg {
+  flex: none;
+}
+
+.pill-side-badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--side-accent);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pill-side-nav a[aria-current="page"] .pill-side-badge {
+  background: var(--side-bg);
+  color: #ffffff;
+}
+
+.pill-sidebar.collapsed .pill-side-label,
+.pill-sidebar.collapsed .pill-side-badge {
+  display: none;
+}
+
+.pill-side-user {
+  margin-top: auto;
+  padding: 6px 12px 6px 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  background: var(--side-soft);
+  white-space: nowrap;
+}
+
+.pill-side-avatar {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--side-bg);
+  font-size: 12px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+.pill-side-user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+.pill-side-user-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pill-side-user-sub {
+  font-size: 10px;
+  color: var(--side-text-muted);
+}
+
+.pill-side-logout {
+  color: #fca5a5;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: color .15s;
+}
+
+.pill-side-logout:hover {
+  color: #ff6b6b;
+}
+
+.pill-sidebar.collapsed .pill-side-user {
+  padding: 6px;
+}
+
+.pill-sidebar.collapsed .pill-side-user-info,
+.pill-sidebar.collapsed .pill-side-logout {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .pill-sidebar, .pill-sidebar.collapsed {
+    width: 68px;
+    padding: 10px 8px;
+    margin: 8px;
+  }
+  .pill-side-top .pill-side-search,
+  .pill-side-label,
+  .pill-side-badge,
+  .pill-side-user-info,
+  .pill-side-logout {
+    display: none !important;
+  }
+}
+
+.btn-reporte {
+  display: inline-flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid #a84708;
+  background: linear-gradient(180deg, #ec7a1e, #d8650f 55%, #c85a0a);
+  color: #fff;
+  font-weight: 600;
+  font-size: 15.5px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35),
+              0 6px 14px -4px rgba(200,90,10,.5);
+}
+
+.btn-reporte:hover {
+  background: linear-gradient(180deg, #d8690f, #c85a0a 55%, #b85008);
+}
+
+.btn-reporte:focus-visible {
+  outline: 3px solid #f7cfa8;
+  outline-offset: 2px;
+}
+
+.btn-reporte svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+}
+
+.btn-reporte span {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-left: 0;
+  transition: max-width .28s ease, opacity .2s ease, margin .28s ease;
+}
+
+.btn-reporte:hover span,
+.btn-reporte:focus-visible span {
+  max-width: 150px;
+  opacity: 1;
+  margin-left: 9px;
+}
+
+@media (hover: none) {
+  .btn-reporte span {
+    max-width: 150px;
+    opacity: 1;
+    margin-left: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-reporte span {
+    transition: none;
+  }
+}

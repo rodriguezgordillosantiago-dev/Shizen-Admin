@@ -1,3 +1,4 @@
+/** Gestiona los tickets, el historial de mensajes y el chat de soporte en vivo. */
 let ticketActualId = null;
 let canalActual = null;
 
@@ -66,7 +67,6 @@ function closeNewTicketModal() {
   document.getElementById("new-ticket-modal").classList.remove("open");
 }
 
-// Al hacer clic en un ticket de la lista
 // Al hacer clic en un ticket de la lista
 function seleccionarTicket(item) {
   document

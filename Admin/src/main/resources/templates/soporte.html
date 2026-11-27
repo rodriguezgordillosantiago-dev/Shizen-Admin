@@ -13,7 +13,7 @@
     <title>Soporte y Tickets - SHIZEN Food</title>
     <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
 
-    <!-- Typography: Inter & Outfit -->
+    <!-- Tipografías: Inter y Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,7 +21,7 @@
       rel="stylesheet"
     />
 
-    <!-- Lucide Icons -->
+    <!-- Íconos de Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -29,12 +29,14 @@
       });
     </script>
 
-    <!-- Dedicated CSS for this page -->
-    <link rel="stylesheet" th:href="@{/soporte.css}" />
+    <!-- Estilos compartidos por soporte y notificaciones -->
+    <link rel="stylesheet" th:href="@{/admin-common.css}" />
+    <!-- Estilos de la barra lateral píldora -->
+    <link rel="stylesheet" th:href="@{/sidebar-pill.css}" />
   </head>
   <body>
     <div id="app-main-wrapper" class="app-container">
-      <!-- Mobile Top Header Bar -->
+      <!-- Barra superior móvil -->
       <header class="mobile-top-header">
         <div style="display: flex; align-items: center; gap: 8px">
           <button
@@ -61,132 +63,82 @@
         </div>
       </header>
 
-      <!-- Mobile Drawer Backdrop -->
+      <!-- Fondo del menú lateral móvil -->
       <div
         id="mobile-drawer-backdrop"
         onclick="closeMobileDrawer()"
         class="mobile-drawer-backdrop"
       ></div>
 
-      <!-- SHARED APPLICATION SIDEBAR -->
-      <aside id="app-sidebar" class="app-sidebar">
-        <!-- Decorative background blur circles -->
-        <div
-          style="
-            position: absolute;
-            -right: 80px;
-            -top: 96px;
-            width: 256px;
-            height: 256px;
-            border-radius: 46% 54% 66% 34%;
-            background: rgba(44, 91, 39, 0.7);
-            transform: rotate(12deg);
-            pointer-events: none;
-          "
-        ></div>
-        <div
-          style="
-            position: absolute;
-            -bottom: 96px;
-            -left: 96px;
-            width: 256px;
-            height: 256px;
-            border-radius: 62% 38% 45% 55%;
-            background: rgba(44, 91, 39, 0.55);
-            transform: rotate(-12deg);
-            pointer-events: none;
-          "
-        ></div>
+      <!-- Definición de íconos SVG para la barra píldora -->
+      <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+        <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M12 20V5M19 20v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-support" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-4.3-4.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-chev" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      </svg>
 
-        <!-- Sidebar Header & Logo -->
-        <div class="sidebar-header-box">
-          <div class="sidebar-logo-row">
-            <img
-              src="../assets/images/logo.png"
-              alt="Shizen Food"
-              class="sidebar-logo-img"
-            />
-            <button
-              onclick="closeMobileDrawer()"
-              class="sidebar-close-btn"
-              aria-label="Cerrar menú"
-            >
-              <i data-lucide="x"></i>
-            </button>
-          </div>
-
-          <!-- Superadmin Profile -->
-          <div class="sidebar-user-card">
-            <div class="user-avatar-circle">AS</div>
-            <div class="user-info-text">
-              <p class="user-name-title">Admin Shizen</p>
-              <p class="user-role-subtitle">Operación Bogotá</p>
-            </div>
-            <span class="user-online-dot"></span>
-          </div>
+      <!-- BARRA LATERAL PÍLDORA -->
+      <nav class="pill-sidebar" id="pill-sidebar" aria-label="Navegación Admin">
+        <div class="pill-side-top">
+          <button class="pill-side-toggle" id="pill-side-toggle" type="button" aria-label="Contraer menú" aria-expanded="true">
+            <svg width="18" height="18"><use href="#i-chev"/></svg>
+          </button>
+          <label class="pill-side-search">
+            <svg width="16" height="16"><use href="#i-search"/></svg>
+            <input type="search" id="pill-nav-search" placeholder="Buscar módulo..." aria-label="Buscar">
+          </label>
         </div>
 
-        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
-        <nav class="sidebar-nav-container">
-          <p class="nav-section-title">Gestión</p>
-          <div class="nav-menu-list">
-            <a href="estadisticas.html" class="sidebar-nav-item">
-              <i data-lucide="bar-chart-3"></i>
-              <span>Estadísticas</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+        <ul class="pill-side-nav" id="pill-nav-list">
+          <li>
+            <a th:href="@{/estadisticas}" href="estadisticas.html" data-title="Estadísticas">
+              <svg width="20" height="20"><use href="#i-chart"/></svg>
+              <span class="pill-side-label">Estadísticas</span>
             </a>
-
-            <a href="pedidos.html" class="sidebar-nav-item">
-              <i data-lucide="shopping-bag"></i>
-              <span>Pedidos</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+          </li>
+          <li>
+            <a th:href="@{/pedidos}" href="pedidos.html" data-title="Pedidos">
+              <svg width="20" height="20"><use href="#i-box"/></svg>
+              <span class="pill-side-label">Pedidos</span>
             </a>
-
-            <a href="usuarios.html" class="sidebar-nav-item">
-              <i data-lucide="user-round"></i>
-              <span>Usuarios</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
+          </li>
+          <li>
+            <a th:href="@{/usuarios}" href="usuarios.html" data-title="Usuarios">
+              <svg width="20" height="20"><use href="#i-users"/></svg>
+              <span class="pill-side-label">Usuarios</span>
             </a>
+          </li>
+          <li>
+            <a th:href="@{/soporte}" href="soporte.html" data-title="Soporte y Tickets" aria-current="page">
+              <svg width="20" height="20"><use href="#i-support"/></svg>
+              <span class="pill-side-label">Soporte y Tickets</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/notificaciones}" href="notificaciones.html" data-title="Notificaciones">
+              <svg width="20" height="20"><use href="#i-bell"/></svg>
+              <span class="pill-side-label">Notificaciones</span>
+              <span class="pill-side-badge">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="pill-side-user">
+          <span class="pill-side-avatar" aria-hidden="true">AS</span>
+          <div class="pill-side-user-info">
+            <span class="pill-side-user-name">Admin Shizen</span>
+            <span class="pill-side-user-sub">Operación Bogotá</span>
           </div>
-        </nav>
-
-        <!-- Superadmin Development Notice Banner -->
-        <div class="sidebar-notice-banner">
-          <div class="notice-icon-box">
-            <i data-lucide="code-2"></i>
-          </div>
-          <div>
-            <p class="notice-title">Estamos trabajando en esto</p>
-            <p class="notice-text">
-              El panel de Superadmin está en desarrollo. Nuevos módulos y
-              herramientas estarán disponibles en futuras versiones.
-            </p>
-          </div>
-        </div>
-
-        <!-- Sidebar Footer Menu -->
-        <div class="sidebar-footer-menu">
-          <a href="soporte.html" class="sidebar-footer-item active">
-            <i data-lucide="headphones"></i>
-            <span>Soporte y Tickets</span>
-          </a>
-
-          <a href="notificaciones.html" class="sidebar-footer-item">
-            <i data-lucide="bell"></i>
-            <span>Notificaciones</span>
-            <span
-              id="sidebar-notification-badge"
-              class="notification-count-badge"
-              >3</span
-            >
-          </a>
-
-          <button onclick="handleLogout()" class="sidebar-footer-item">
-            <i data-lucide="log-out"></i>
-            <span>Cerrar sesión</span>
+          <button onclick="handleLogout()" class="pill-side-logout" title="Cerrar sesión" aria-label="Cerrar sesión">
+            <svg width="18" height="18"><use href="#i-logout"/></svg>
           </button>
         </div>
-      </aside>
+      </nav>
 
       <main id="view-soporte" class="view-section active">
         <div class="view-content-container">
@@ -205,9 +157,9 @@
             </button>
           </header>
 
-          <!-- Two Column Support & Chat Layout -->
+          <!-- Diseño de soporte y chat en dos columnas -->
           <div class="support-grid">
-            <!-- Tickets List Card -->
+            <!-- Lista de tickets -->
             <div class="support-tickets-card">
               <div class="support-tickets-header">
                 <h3 class="support-tickets-header-title">Bandeja de entrada</h3>
@@ -275,7 +227,7 @@
               </div>
             </div>
 
-            <!-- Active Ticket Chat Card -->
+            <!-- Conversación del ticket activo -->
             <div class="support-chat-card">
               <div
                 class="support-chat-header"
@@ -366,12 +318,12 @@
                   </span>
                 </div>
               </div>
-              <!-- Messages Area -->
+              <!-- Área de mensajes -->
               <div id="support-chat-messages" class="support-chat-messages">
-                <!-- Injected via JavaScript -->
+                <!-- Contenido generado con JavaScript -->
               </div>
 
-              <!-- Reply Form -->
+              <!-- Formulario de respuesta -->
               <form
                 onsubmit="sendSupportChatMessage(event)"
                 class="support-chat-input-row"
@@ -497,23 +449,25 @@
             </div>
           </form>
         </div>
-       <script th:inline="javascript">
-  const ADMIN_ID = /*[[${adminId}]]*/ null;
-  const ticketCreado = /*[[${ticketCreado}]]*/ false;
-  const ticketAsunto = /*[[${ticketAsunto}]]*/ "";
-  if (ticketCreado) {
-    Swal.fire({
-      icon: "success",
-      title: "¡Ticket creado!",
-      text: "El ticket \"" + ticketAsunto + "\" fue registrado en la bandeja.",
-      confirmButtonColor: "#2c5b27"
-    });
-  }
-</script>
       </div>
     </div>
+
+    <!-- Variables Thymeleaf para JS -->
+    <script th:inline="javascript">
+      const ADMIN_ID = /*[[${adminId}]]*/ null;
+      const ticketCreado = /*[[${ticketCreado}]]*/ false;
+      const ticketAsunto = /*[[${ticketAsunto}]]*/ "";
+      if (ticketCreado) {
+        Swal.fire({
+          icon: "success",
+          title: "¡Ticket creado!",
+          text: "El ticket \"" + ticketAsunto + "\" fue registrado en la bandeja.",
+          confirmButtonColor: "#2c5b27"
+        });
+      }
     </script>
     <script th:src="@{/js/websocket.js}"></script>
     <script th:src="@{/js/soporte.js}"></script>
+    <script th:src="@{/js/sidebar-pill.js}"></script>
   </body>
 </html>

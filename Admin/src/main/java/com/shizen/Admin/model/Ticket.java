@@ -3,6 +3,7 @@ package com.shizen.Admin.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+/** Representa una solicitud de soporte y sus datos de seguimiento. */
 @Entity 
 @Table(name = "ticket")
 public class Ticket {

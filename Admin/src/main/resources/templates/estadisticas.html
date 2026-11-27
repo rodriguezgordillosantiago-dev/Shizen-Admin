@@ -6,7 +6,7 @@
     <title>Estadísticas - SHIZEN Food</title>
     <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
 
-    <!-- Typography: Inter & Outfit -->
+    <!-- Tipografías: Inter y Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
 
-    <!-- Lucide Icons -->
+    <!-- Íconos de Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -22,12 +22,14 @@
       });
     </script>
 
-    <!-- Dedicated CSS for this page -->
+    <!-- Estilos específicos de esta página -->
     <link rel="stylesheet" th:href="@{/estadisticas.css}" />
+    <!-- Estilos de la barra lateral píldora -->
+    <link rel="stylesheet" th:href="@{/sidebar-pill.css}" />
   </head>
   <body>
     <div id="app-main-wrapper" class="app-container">
-      <!-- Mobile Top Header Bar -->
+      <!-- Barra superior móvil -->
       <header class="mobile-top-header">
         <div style="display: flex; align-items: center; gap: 8px">
           <button
@@ -54,132 +56,192 @@
         </div>
       </header>
 
-      <!-- Mobile Drawer Backdrop -->
+      <!-- Fondo del menú lateral móvil -->
       <div
         id="mobile-drawer-backdrop"
         onclick="closeMobileDrawer()"
         class="mobile-drawer-backdrop"
       ></div>
 
-      <!-- SHARED APPLICATION SIDEBAR -->
-      <aside id="app-sidebar" class="app-sidebar">
-        <!-- Decorative background blur circles -->
-        <div
-          style="
-            position: absolute;
-            -right: 80px;
-            -top: 96px;
-            width: 256px;
-            height: 256px;
-            border-radius: 46% 54% 66% 34%;
-            background: rgba(44, 91, 39, 0.7);
-            transform: rotate(12deg);
-            pointer-events: none;
-          "
-        ></div>
-        <div
-          style="
-            position: absolute;
-            -bottom: 96px;
-            -left: 96px;
-            width: 256px;
-            height: 256px;
-            border-radius: 62% 38% 45% 55%;
-            background: rgba(44, 91, 39, 0.55);
-            transform: rotate(-12deg);
-            pointer-events: none;
-          "
-        ></div>
+      <!-- Definición de íconos SVG para la barra píldora -->
+      <svg
+        width="0"
+        height="0"
+        style="position: absolute; width: 0; height: 0; overflow: hidden"
+        aria-hidden="true"
+      >
+        <symbol id="i-chart" viewBox="0 0 24 24">
+          <path
+            d="M5 20v-8M12 20V5M19 20v-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-box" viewBox="0 0 24 24">
+          <path
+            d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-users" viewBox="0 0 24 24">
+          <path
+            d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-support" viewBox="0 0 24 24">
+          <path
+            d="M3 18v-6a9 9 0 0 1 18 0v6M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24">
+          <path
+            d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24">
+          <path
+            d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-4.3-4.3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-chev" viewBox="0 0 24 24">
+          <path
+            d="M15 19l-7-7 7-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24">
+          <path
+            d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+      </svg>
 
-        <!-- Sidebar Header & Logo -->
-        <div class="sidebar-header-box">
-          <div class="sidebar-logo-row">
-            <img
-              src="../assets/images/logo.png"
-              alt="Shizen Food"
-              class="sidebar-logo-img"
+      <!-- BARRA LATERAL PÍLDORA -->
+      <nav class="pill-sidebar" id="pill-sidebar" aria-label="Navegación Admin">
+        <div class="pill-side-top">
+          <button
+            class="pill-side-toggle"
+            id="pill-side-toggle"
+            type="button"
+            aria-label="Contraer menú"
+            aria-expanded="true"
+          >
+            <svg width="18" height="18"><use href="#i-chev" /></svg>
+          </button>
+          <label class="pill-side-search">
+            <svg width="16" height="16"><use href="#i-search" /></svg>
+            <input
+              type="search"
+              id="pill-nav-search"
+              placeholder="Buscar módulo..."
+              aria-label="Buscar"
             />
-            <button
-              onclick="closeMobileDrawer()"
-              class="sidebar-close-btn"
-              aria-label="Cerrar menú"
-            >
-              <i data-lucide="x"></i>
-            </button>
-          </div>
-
-          <!-- Superadmin Profile -->
-          <div class="sidebar-user-card">
-            <div class="user-avatar-circle">AS</div>
-            <div class="user-info-text">
-              <p class="user-name-title">Admin Shizen</p>
-              <p class="user-role-subtitle">Operación Bogotá</p>
-            </div>
-            <span class="user-online-dot"></span>
-          </div>
+          </label>
         </div>
 
-        <!-- Main Navigation Menu (3 items: Estadísticas, Pedidos, Usuarios) -->
-        <nav class="sidebar-nav-container">
-          <p class="nav-section-title">Gestión</p>
-          <div class="nav-menu-list">
-            <a href="estadisticas.html" class="sidebar-nav-item active">
-              <i data-lucide="bar-chart-3"></i>
-              <span>Estadísticas</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
-            </a>
-
-            <a href="pedidos.html" class="sidebar-nav-item">
-              <i data-lucide="shopping-bag"></i>
-              <span>Pedidos</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
-            </a>
-
-            <a href="usuarios.html" class="sidebar-nav-item">
-              <i data-lucide="user-round"></i>
-              <span>Usuarios</span>
-              <i data-lucide="chevron-right" class="nav-chevron-icon"></i>
-            </a>
-          </div>
-        </nav>
-
-        <!-- Superadmin Development Notice Banner -->
-        <div class="sidebar-notice-banner">
-          <div class="notice-icon-box">
-            <i data-lucide="code-2"></i>
-          </div>
-          <div>
-            <p class="notice-title">Estamos trabajando en esto</p>
-            <p class="notice-text">
-              El panel de Superadmin está en desarrollo. Nuevos módulos y
-              herramientas estarán disponibles en futuras versiones.
-            </p>
-          </div>
-        </div>
-
-        <!-- Sidebar Footer Menu -->
-        <div class="sidebar-footer-menu">
-          <a href="soporte.html" class="sidebar-footer-item">
-            <i data-lucide="headphones"></i>
-            <span>Soporte y Tickets</span>
-          </a>
-
-          <a href="notificaciones.html" class="sidebar-footer-item">
-            <i data-lucide="bell"></i>
-            <span>Notificaciones</span>
-            <span
-              id="sidebar-notification-badge"
-              class="notification-count-badge"
-              >3</span
+        <ul class="pill-side-nav" id="pill-nav-list">
+          <li>
+            <a
+              th:href="@{/estadisticas}"
+              href="estadisticas.html"
+              data-title="Estadísticas"
+              aria-current="page"
             >
-          </a>
+              <svg width="20" height="20"><use href="#i-chart" /></svg>
+              <span class="pill-side-label">Estadísticas</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/pedidos}" href="pedidos.html" data-title="Pedidos">
+              <svg width="20" height="20"><use href="#i-box" /></svg>
+              <span class="pill-side-label">Pedidos</span>
+            </a>
+          </li>
+          <li>
+            <a
+              th:href="@{/usuarios}"
+              href="usuarios.html"
+              data-title="Usuarios"
+            >
+              <svg width="20" height="20"><use href="#i-users" /></svg>
+              <span class="pill-side-label">Usuarios</span>
+            </a>
+          </li>
+          <li>
+            <a
+              th:href="@{/soporte}"
+              href="soporte.html"
+              data-title="Soporte y Tickets"
+            >
+              <svg width="20" height="20"><use href="#i-support" /></svg>
+              <span class="pill-side-label">Soporte y Tickets</span>
+            </a>
+          </li>
+          <li>
+            <a
+              th:href="@{/notificaciones}"
+              href="notificaciones.html"
+              data-title="Notificaciones"
+            >
+              <svg width="20" height="20"><use href="#i-bell" /></svg>
+              <span class="pill-side-label">Notificaciones</span>
+              <span class="pill-side-badge">3</span>
+            </a>
+          </li>
+        </ul>
 
-          <button onclick="handleLogout()" class="sidebar-footer-item">
-            <i data-lucide="log-out"></i>
-            <span>Cerrar sesión</span>
+        <div class="pill-side-user">
+          <span class="pill-side-avatar" aria-hidden="true">AS</span>
+          <div class="pill-side-user-info">
+            <span class="pill-side-user-name">Admin Shizen</span>
+            <span class="pill-side-user-sub">Operación Bogotá</span>
+          </div>
+          <button
+            onclick="handleLogout()"
+            class="pill-side-logout"
+            title="Cerrar sesión"
+            aria-label="Cerrar sesión"
+          >
+            <svg width="18" height="18"><use href="#i-logout" /></svg>
           </button>
         </div>
-      </aside>
+      </nav>
 
       <main id="view-estadisticas" class="view-section active">
         <div class="view-content-container">
@@ -190,49 +252,54 @@
               </div>
               <h1 class="view-header-title">Estadísticas</h1>
               <p class="view-header-subtitle">
-                Indicadores financieros, volumen de pedidos y productos líderes
-                en la red Shizen.
+                Ingresos, pedidos y actividad de clientes en la plataforma.
               </p>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px">
-              <button
-                onclick="setAnalyticsPeriod('Mes')"
-                class="analytics-period-btn active"
-                data-period="Mes"
-              >
-                Mes
-              </button>
-              <button
-                onclick="setAnalyticsPeriod('Trimestre')"
-                class="analytics-period-btn"
-                data-period="Trimestre"
-              >
-                Trimestre
-              </button>
-              <button
-                onclick="setAnalyticsPeriod('Año')"
-                class="analytics-period-btn"
-                data-period="Año"
-              >
-                Año
-              </button>
+            <div style="display: flex; align-items: center; gap: 10px">
+              <a th:href="@{/reportes/auditoria}" class="btn-reporte">
+                <i data-lucide="file-down"></i>
+                <span>Generar reporte</span>
+              </a>
             </div>
           </header>
 
-          <!-- 4 KPI Cards -->
+          <p
+            id="analytics-period-info"
+            class="analytics-period-info"
+            aria-live="polite"
+          >
+            Consultando los últimos 30 días, incluido hoy.
+          </p>
+
+          <!-- Tarjetas KPI: haz clic en una para cambiar la gráfica principal -->
           <section class="analytics-kpi-grid">
-            <div class="analytics-kpi-card">
+            <article
+              class="analytics-kpi-card analytics-kpi-card--featured"
+              data-metric="revenue"
+              role="button"
+              tabindex="0"
+            >
               <div class="analytics-kpi-header">
-                <span class="analytics-kpi-title">Ingresos Brutos</span>
+                <span class="analytics-kpi-title">Ingresos</span>
                 <div class="metric-icon-box">
                   <i data-lucide="dollar-sign"></i>
                 </div>
               </div>
-              <p class="analytics-kpi-val">$850M COP</p>
-              <p class="analytics-kpi-trend">↑ +14.2% vs año anterior</p>
-            </div>
+              <p class="analytics-kpi-val" id="kpi-ingresos">—</p>
+              <p class="analytics-kpi-trend" id="kpi-ingresos-trend">
+                Cargando datos reales...
+              </p>
+              <p class="analytics-kpi-caption">
+                Compras completadas en el período
+              </p>
+            </article>
 
-            <div class="analytics-kpi-card">
+            <article
+              class="analytics-kpi-card"
+              data-metric="orders"
+              role="button"
+              tabindex="0"
+            >
               <div class="analytics-kpi-header">
                 <span class="analytics-kpi-title">Pedidos Totales</span>
                 <div
@@ -242,22 +309,40 @@
                   <i data-lucide="shopping-cart"></i>
                 </div>
               </div>
-              <p class="analytics-kpi-val">10.450 ped.</p>
-              <p class="analytics-kpi-trend">↑ +8.6% volumen</p>
-            </div>
+              <p class="analytics-kpi-val" id="kpi-pedidos">—</p>
+              <p class="analytics-kpi-trend" id="kpi-pedidos-trend">
+                Cargando datos reales...
+              </p>
+              <p class="analytics-kpi-caption">Pedidos creados en el período</p>
+            </article>
 
-            <div class="analytics-kpi-card">
+            <article
+              class="analytics-kpi-card"
+              data-metric="commission"
+              role="button"
+              tabindex="0"
+            >
               <div class="analytics-kpi-header">
-                <span class="analytics-kpi-title">Margen Operativo</span>
+                <span class="analytics-kpi-title">Comisión estimada</span>
                 <div class="metric-icon-box">
-                  <i data-lucide="target"></i>
+                  <i data-lucide="percent"></i>
                 </div>
               </div>
-              <p class="analytics-kpi-val">$248.5M COP</p>
-              <p class="analytics-kpi-trend">↑ 29.2% rentabilidad</p>
-            </div>
+              <p class="analytics-kpi-val" id="kpi-comision">—</p>
+              <p class="analytics-kpi-trend" id="kpi-comision-trend">
+                Cargando configuración...
+              </p>
+              <p class="analytics-kpi-caption">
+                Estimación basada en la comisión configurada
+              </p>
+            </article>
 
-            <div class="analytics-kpi-card">
+            <article
+              class="analytics-kpi-card"
+              data-metric="ticket"
+              role="button"
+              tabindex="0"
+            >
               <div class="analytics-kpi-header">
                 <span class="analytics-kpi-title">Ticket Promedio</span>
                 <div
@@ -267,148 +352,181 @@
                   <i data-lucide="trending-up"></i>
                 </div>
               </div>
-              <p class="analytics-kpi-val">$81.340 COP</p>
-              <p class="analytics-kpi-trend">↑ +5.1% ticket</p>
-            </div>
+              <p class="analytics-kpi-val" id="kpi-ticket">—</p>
+              <p class="analytics-kpi-trend" id="kpi-ticket-trend">
+                Cargando datos reales...
+              </p>
+              <p class="analytics-kpi-caption">
+                Ingresos / compras completadas
+              </p>
+            </article>
+
+            <article
+              class="analytics-kpi-card"
+              data-metric="users"
+              role="button"
+              tabindex="0"
+            >
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Usuarios registrados</span>
+                <div class="metric-icon-box">
+                  <i data-lucide="users-round"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val" id="kpi-usuarios">—</p>
+              <p class="analytics-kpi-trend" id="kpi-usuarios-trend">
+                Cargando datos reales...
+              </p>
+              <p class="analytics-kpi-caption">Total de clientes registrados</p>
+            </article>
+
+            <article
+              class="analytics-kpi-card"
+              data-metric="activeUsers"
+              role="button"
+              tabindex="0"
+            >
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Usuarios activos</span>
+                <div class="metric-icon-box">
+                  <i data-lucide="user-check"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val" id="kpi-activos">—</p>
+              <p class="analytics-kpi-trend" id="kpi-activos-trend">
+                Cargando datos reales...
+              </p>
+              <p class="analytics-kpi-caption">
+                Con compra completada en el período
+              </p>
+            </article>
+
+            <article
+              class="analytics-kpi-card"
+              data-metric="purchases"
+              role="button"
+              tabindex="0"
+            >
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Compras completadas</span>
+                <div class="metric-icon-box">
+                  <i data-lucide="shopping-bag"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val" id="kpi-compras">—</p>
+              <p class="analytics-kpi-trend" id="kpi-compras-trend">
+                Cargando datos reales...
+              </p>
+              <p class="analytics-kpi-caption">Compras pagadas y completadas</p>
+            </article>
+
+            <article
+              class="analytics-kpi-card"
+              data-metric="revenue"
+              role="button"
+              tabindex="0"
+            >
+              <div class="analytics-kpi-header">
+                <span class="analytics-kpi-title">Ingresos del mes</span>
+                <div class="metric-icon-box">
+                  <i data-lucide="goal"></i>
+                </div>
+              </div>
+              <p class="analytics-kpi-val" id="kpi-meta">—</p>
+              <p class="analytics-kpi-trend" id="kpi-meta-trend">
+                Cargando meta configurada...
+              </p>
+              <p class="analytics-kpi-caption">
+                Acumulado del mes calendario actual
+              </p>
+            </article>
           </section>
 
-          <!-- Interactive Visualizer & Top Products -->
+          <!-- Gráfica de evolución temporal + platos más vendidos -->
           <section class="analytics-chart-grid">
-            <div class="analytics-card">
+            <div class="analytics-card analytics-main-chart">
               <div class="analytics-card-header">
                 <div>
-                  <h3
-                    style="
-                      font-family: &quot;Outfit&quot;, sans-serif;
-                      font-size: 20px;
-                      font-weight: 700;
-                    "
-                  >
-                    Evolución temporal
-                  </h3>
-                  <p style="font-size: 12px; color: #7b857a; margin-top: 2px">
-                    Comportamiento según la métrica seleccionada
+                  <h2 class="analytics-card-title">
+                    Evolución temporal ·
+                    <span
+                      id="analytics-chart-heading-metric"
+                      style="color: var(--primary)"
+                      >Ingresos</span
+                    >
+                  </h2>
+                  <p class="analytics-card-description">
+                    Comportamiento diario según la métrica seleccionada en las
+                    tarjetas
                   </p>
                 </div>
-                <div class="segmented-control">
+                <div
+                  class="analytics-period-controls"
+                  role="group"
+                  aria-label="Período de consulta"
+                >
                   <button
-                    onclick="setAnalyticsMetric('revenue')"
-                    data-metric="revenue"
-                    class="analytics-metric-btn active"
+                    type="button"
+                    onclick="setAnalyticsPeriod('Mes')"
+                    class="analytics-period-btn active"
+                    data-period="Mes"
+                    aria-pressed="true"
                   >
-                    Ingresos
+                    Mes
                   </button>
                   <button
-                    onclick="setAnalyticsMetric('orders')"
-                    data-metric="orders"
-                    class="analytics-metric-btn"
+                    type="button"
+                    onclick="setAnalyticsPeriod('Trimestre')"
+                    class="analytics-period-btn"
+                    data-period="Trimestre"
+                    aria-pressed="false"
                   >
-                    Pedidos
+                    Trimestre
                   </button>
                   <button
-                    onclick="setAnalyticsMetric('profit')"
-                    data-metric="profit"
-                    class="analytics-metric-btn"
+                    type="button"
+                    onclick="setAnalyticsPeriod('Año')"
+                    class="analytics-period-btn"
+                    data-period="Año"
+                    aria-pressed="false"
                   >
-                    Utilidad
+                    Año
                   </button>
                 </div>
               </div>
-              <div id="analytics-bars-container" class="analytics-bars">
-                <!-- Injected via JavaScript -->
+              <div class="analytics-chart-summary">
+                <span id="analytics-chart-title">Ingresos</span>
+                <strong id="analytics-chart-current">Cargando...</strong>
+              </div>
+              <div
+                id="analytics-bars-container"
+                class="analytics-bars"
+                aria-live="polite"
+              >
+                <p class="analytics-chart-message">
+                  Cargando datos de la gráfica...
+                </p>
               </div>
             </div>
 
-            <!-- Top 5 Products -->
-            <div
-              class="analytics-card"
-              style="
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-              "
-            >
-              <div>
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-bottom: 16px;
-                  "
-                >
-                  <h3
-                    style="
-                      font-family: &quot;Outfit&quot;, sans-serif;
-                      font-size: 20px;
-                      font-weight: 700;
-                    "
-                  >
-                    Platos más vendidos
-                  </h3>
-                  <span
-                    class="tab-badge"
-                    style="
-                      background: #eef5ea;
-                      color: #397438;
-                      font-weight: 700;
-                    "
-                    >Top 5</span
-                  >
+            <div class="analytics-card analytics-products-card">
+              <div class="analytics-products-header">
+                <div>
+                  <h2 class="analytics-card-title">Categorías más compradas</h2>
+                  <p class="analytics-card-description">
+                    Unidades vendidas por categoría
+                  </p>
                 </div>
-                <div class="top-products-list">
-                  <div class="top-product-item">
-                    <div>
-                      <p class="top-product-name">Veggie Burger</p>
-                      <p class="top-product-orders">245 órdenes completadas</p>
-                    </div>
-                    <div style="text-align: right">
-                      <p class="top-product-price">$14.580.000 COP</p>
-                      <p class="top-product-trend">↑ +12%</p>
-                    </div>
-                  </div>
-                  <div class="top-product-item">
-                    <div>
-                      <p class="top-product-name">Shizen Express</p>
-                      <p class="top-product-orders">198 órdenes completadas</p>
-                    </div>
-                    <div style="text-align: right">
-                      <p class="top-product-price">$11.880.000 COP</p>
-                      <p class="top-product-trend">↑ +8%</p>
-                    </div>
-                  </div>
-                  <div class="top-product-item">
-                    <div>
-                      <p class="top-product-name">Ensalada Verde</p>
-                      <p class="top-product-orders">176 órdenes completadas</p>
-                    </div>
-                    <div style="text-align: right">
-                      <p class="top-product-price">$8.448.000 COP</p>
-                      <p class="top-product-trend">↑ +15%</p>
-                    </div>
-                  </div>
-                  <div class="top-product-item">
-                    <div>
-                      <p class="top-product-name">Lentejas con Verduras</p>
-                      <p class="top-product-orders">154 órdenes completadas</p>
-                    </div>
-                    <div style="text-align: right">
-                      <p class="top-product-price">$7.392.000 COP</p>
-                      <p class="top-product-trend">↑ +5%</p>
-                    </div>
-                  </div>
-                  <div class="top-product-item">
-                    <div>
-                      <p class="top-product-name">Taboule Especial</p>
-                      <p class="top-product-orders">132 órdenes completadas</p>
-                    </div>
-                    <div style="text-align: right">
-                      <p class="top-product-price">$6.336.000 COP</p>
-                      <p class="top-product-trend" style="color: #c45e0a">
-                        ↓ -3%
-                      </p>
-                    </div>
-                  </div>
+              </div>
+              <div class="categories-donut-layout">
+                <ul id="categorias-legend" class="categories-legend"></ul>
+                <div class="categories-donut-wrap">
+                  <div id="categorias-donut"></div>
+                  <div
+                    id="categorias-tooltip"
+                    class="categories-tooltip"
+                    hidden
+                  ></div>
                 </div>
               </div>
             </div>
@@ -417,7 +535,9 @@
       </main>
     </div>
 
-    <!-- Core Application Logic (Pure Vanilla JS) -->
-    <script src="../js/app.js"></script>
+    <!-- Código de la página -->
+    <script th:src="@{/js/estadisticas.js}"></script>
+    <script th:src="@{/js/app.js}"></script>
+    <script th:src="@{/js/sidebar-pill.js}"></script>
   </body>
 </html>

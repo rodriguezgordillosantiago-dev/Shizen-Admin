@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap');
-
 /* ======================================================== */
-/* DESIGN TOKENS & VARIABLES                                */
+/* VARIABLES DE DISEÑO                                */
 /* ======================================================== */
 :root {
   --primary: #4c9540;
@@ -32,7 +30,7 @@
 }
 
 /* ======================================================== */
-/* CSS RESET & BASE STYLES                                  */
+/* REINICIO CSS Y ESTILOS BASE                                  */
 /* ======================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -71,7 +69,7 @@ button {
   background: transparent;
 }
 
-/* Scrollbar */
+/* Barra de desplazamiento */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -89,7 +87,7 @@ button {
 
 /* ======================================================== */
 
-/* LOGIN SCREEN STYLES (Pure CSS Replica of LoginScreen.tsx)*/
+/* ESTILOS DE INICIO DE SESIÓN (réplica en CSS de LoginScreen.tsx)*/
 /* ======================================================== */
 .login-page {
   display: flex;
@@ -119,7 +117,7 @@ button {
   }
 }
 
-/* Decorative Circles on Brand Panel */
+/* Círculos decorativos del panel de marca */
 .deco-circle-1 {
   position: absolute;
   top: -144px;
@@ -271,7 +269,7 @@ button {
   50% { opacity: 0.5; transform: scale(1.2); }
 }
 
-/* Right Login Form Panel */
+/* Panel derecho del formulario de inicio de sesión */
 .login-form-panel {
   flex: 1;
   display: flex;
@@ -462,10 +460,8 @@ button {
 
 /* ======================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap');
-
 /* ======================================================== */
-/* DESIGN TOKENS & VARIABLES                                */
+/* VARIABLES DE DISEÑO                                */
 /* ======================================================== */
 :root {
   --primary: #4c9540;
@@ -496,7 +492,7 @@ button {
 }
 
 /* ======================================================== */
-/* CSS RESET & BASE STYLES                                  */
+/* REINICIO CSS Y ESTILOS BASE                                  */
 /* ======================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -535,7 +531,7 @@ button {
   background: transparent;
 }
 
-/* Scrollbar */
+/* Barra de desplazamiento */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -552,7 +548,7 @@ button {
 }
 
 /* ======================================================== */
-/* LOGIN SCREEN STYLES (Pure CSS Replica of LoginScreen.tsx)*/
+/* ESTILOS DE INICIO DE SESIÓN (réplica en CSS de LoginScreen.tsx)*/
 /* ======================================================== */
 .login-page {
   display: flex;
@@ -582,7 +578,7 @@ button {
   }
 }
 
-/* Decorative Circles on Brand Panel */
+/* Círculos decorativos del panel de marca */
 .deco-circle-1 {
   position: absolute;
   top: -144px;
@@ -734,7 +730,7 @@ button {
   50% { opacity: 0.5; transform: scale(1.2); }
 }
 
-/* Right Login Form Panel */
+/* Panel derecho del formulario de inicio de sesión */
 .login-form-panel {
   flex: 1;
   display: flex;
@@ -924,7 +920,7 @@ button {
 
 
 /* ======================================================== */
-/* MAIN APP LAYOUT & SIDEBAR STYLES                         */
+/* ESTRUCTURA PRINCIPAL Y ESTILOS DE LA BARRA LATERAL                         */
 /* ======================================================== */
 .app-container {
   position: relative;
@@ -932,7 +928,7 @@ button {
   min-height: 100vh;
 }
 
-/* Mobile Header */
+/* Encabezado móvil */
 .mobile-top-header {
   position: fixed;
   top: 0;
@@ -985,7 +981,7 @@ button {
   display: block;
 }
 
-/* App Sidebar */
+/* Barra lateral de la aplicación */
 .app-sidebar {
   position: fixed;
   top: 0;
@@ -1254,7 +1250,7 @@ button {
 }
 
 /* ======================================================== */
-/* MAIN CONTENT VIEWS & CARDS                               */
+/* VISTAS PRINCIPALES Y TARJETAS                               */
 /* ======================================================== */
 .view-section {
   display: none !important;
@@ -1374,7 +1370,7 @@ button {
   background: var(--accent-hover);
 }
 
-/* Metric Cards */
+/* Tarjetas de métricas */
 .metrics-row-3 {
   display: grid;
   grid-template-columns: 1fr;
@@ -1483,7 +1479,7 @@ button {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Activity & Peak Hour Grid */
+/* Actividad y horas pico */
 .activity-peak-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1627,7 +1623,7 @@ button {
   color: #FFB36F;
 }
 
-/* Modal Form Controls & Cards */
+/* Controles y tarjetas de formularios modales */
 .order-customer-card {
   display: flex;
   align-items: center;
@@ -1862,7 +1858,7 @@ button {
   background: #B91C1C;
 }
 
-/* Data Table Card */
+/* Tarjeta de tabla de datos */
 .table-card {
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-color);
@@ -1988,7 +1984,7 @@ button {
   background-color: #F9FAF5;
 }
 
-/* Status Badges */
+/* Insignias de estado */
 .badge-status {
   display: inline-flex;
   align-items: center;
@@ -2018,7 +2014,7 @@ button {
   border: 1px solid rgba(107, 117, 107, 0.15);
 }
 
-/* User Account Badges */
+/* Insignias de cuentas de usuario */
 .badge-account-type {
   display: inline-flex;
   align-items: center;
@@ -2044,7 +2040,7 @@ button {
   color: #5C6986;
 }
 
-/* Filter pills row */
+/* Fila de filtros */
 .filter-pills-row {
   display: flex;
   gap: 8px;
@@ -2096,7 +2092,7 @@ button {
   color: #FFFFFF;
 }
 
-/* Action Icon Button */
+/* Botón de acción con ícono */
 .btn-icon-action {
   width: 32px;
   height: 32px;
@@ -2114,7 +2110,7 @@ button {
 }
 
 /* ======================================================== */
-/* MODALS (100% PURE CSS - ZERO TAILWIND DEPENDENCY)        */
+/* MODALES (100 % CSS PURO, SIN DEPENDENCIA DE TAILWIND)        */
 /* ======================================================== */
 .modal-overlay {
   display: none !important;
@@ -2209,7 +2205,7 @@ button {
   border-top: 1px solid #E4E8E1;
 }
 
-/* User Account Modal 3 Action Buttons */
+/* 3 botones de acción del modal de cuentas */
 .account-actions-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2260,7 +2256,7 @@ button {
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
-/* Interactive Map Route Card in Order Details */
+/* Mapa interactivo de ruta en detalles del pedido */
 .map-route-container {
   position: relative;
   height: 170px;
@@ -2397,7 +2393,7 @@ button {
 }
 
 /* ======================================================== */
-/* SUPPORT & CHAT MODULE STYLES                             */
+/* ESTILOS DEL MÓDULO DE SOPORTE Y CHAT                             */
 /* ======================================================== */
 .support-grid {
   display: grid;
@@ -2627,7 +2623,7 @@ button {
 }
 
 /* ======================================================== */
-/* NOTIFICATIONS MODULE STYLES                              */
+/* ESTILOS DEL MÓDULO DE NOTIFICACIONES                              */
 /* ======================================================== */
 .notifications-header-actions {
   display: flex;
@@ -2776,7 +2772,7 @@ button {
 }
 
 /* ======================================================== */
-/* ANALYTICS MODULE STYLES                                  */
+/* ESTILOS DEL MÓDULO DE ESTADÍSTICAS                                  */
 /* ======================================================== */
 .analytics-period-btn, .analytics-metric-btn {
   border-radius: var(--radius-md);
@@ -2965,7 +2961,7 @@ button {
 }
 
 /* ======================================================== */
-/* USERS SUMMARY & DIRECTORY MODULE STYLES                  */
+/* RESUMEN Y DIRECTORIO DE USUARIOS                  */
 /* ======================================================== */
 .users-summary-grid {
   display: grid;
@@ -3014,7 +3010,7 @@ button {
   color: #7B857A;
 }
 
-/* Dropdown & Context Menu */
+/* Menú desplegable y menú contextual */
 .action-dropdown-menu {
   position: absolute;
   right: 24px;
@@ -3044,7 +3040,7 @@ button {
   background: #F3F5EF;
 }
 
-/* User Avatar in Table */
+/* Avatar del usuario en la tabla */
 .table-avatar {
   width: 32px;
   height: 32px;
@@ -3073,14 +3069,14 @@ button {
   color: #5C6986;
 }
 
-/* General Layout Utilities */
+/* Utilidades generales de diseño */
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nowrap { white-space: nowrap; }
 
 /* ======================================================== */
-/* UTILITY CLASSES                                          */
+/* CLASES DE UTILIDAD                                          */
 /* ======================================================== */
 .hidden {
   display: none !important;
