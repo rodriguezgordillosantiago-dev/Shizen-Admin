@@ -17,7 +17,7 @@ public class ReporteService {
 
     private final ReporteRepository repo;
     private static final DateTimeFormatter FMT_LARGO =
-            DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", new Locale("es", "CO"));
+            DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale.of("es", "CO"));
 
     // Porcentajes usados para estimar la comisión y el componente de envío.
     private static final double PCT_COMISION = 0.10;

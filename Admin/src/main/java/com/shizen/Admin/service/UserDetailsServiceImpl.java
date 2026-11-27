@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,13 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println(">>> Intentando login con correo: [" + email + "]");
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con correo: " + email));
-
-        System.out.println(">>> Usuario encontrado en BD: " + usuario.getEmail());
-        System.out.println(">>> Hash en BD: " + usuario.getPasswordHash());
-        System.out.println(">>> ¿Baneado?: " + usuario.getBaneado());
 
         boolean enabled = usuario.getBaneado() == null || !usuario.getBaneado();
 
